@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>VGraphPort</RootNamespace>
     <OutputType>WinExe</OutputType>
@@ -10,6 +10,28 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="images\Box.png" />
+    <None Remove="images\Boxy Circle.png" />
+    <None Remove="images\Circle.png" />
+    <None Remove="images\Ellipse.png" />
+    <None Remove="images\Eyedropper.png" />
+    <None Remove="images\Line.png" />
+    <None Remove="images\Texttool.png" />
+    <None Remove="images\Triangle.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="images\Box.png" />
+    <AvaloniaResource Include="images\Boxy Circle.png" />
+    <AvaloniaResource Include="images\Circle.png" />
+    <AvaloniaResource Include="images\Ellipse.png" />
+    <AvaloniaResource Include="images\Eyedropper.png" />
+    <AvaloniaResource Include="images\Line.png" />
+    <AvaloniaResource Include="images\Triangle.png" />
+	  <AvaloniaResource Include="images\Texttool.png" />
   </ItemGroup>
 
   <ItemGroup>
