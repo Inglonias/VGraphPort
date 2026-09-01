@@ -11,10 +11,20 @@
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
-
-    <SKCanvasView></SKCanvasView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <TextBox Text="{Binding Greeting}"
+                     VerticalAlignment="Center"
+                     Margin="8"/>
+        </DockPanel>
+    </Grid>
 
 </Window>
