@@ -24,17 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="images\Box.png" />
-    <AvaloniaResource Include="images\Boxy Circle.png" />
-    <AvaloniaResource Include="images\Circle.png" />
-    <AvaloniaResource Include="images\Ellipse.png" />
-    <AvaloniaResource Include="images\Eyedropper.png" />
-    <AvaloniaResource Include="images\Line.png" />
-    <AvaloniaResource Include="images\Triangle.png" />
-	  <AvaloniaResource Include="images\Texttool.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.1" />
     <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.1" />
