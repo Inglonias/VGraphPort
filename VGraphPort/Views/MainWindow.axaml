@@ -22,7 +22,7 @@
 			<RowDefinition Height="24"/>
 		</Grid.RowDefinitions>
 		<DockPanel Grid.Row="0">
-			<local:UserControl1></local:UserControl1>
+			<local:MenuBarControl></local:MenuBarControl>
 		</DockPanel>
 		<local:MainCanvas Grid.Row="1"/>
 	</Grid>

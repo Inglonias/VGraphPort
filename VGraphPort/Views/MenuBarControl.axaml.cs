@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace VGraphPort.Views
 {
-    public partial class UserControl1 : UserControl
+    public partial class MenuBarControl : UserControl
     {
-        public UserControl1()
+        public MenuBarControl()
         {
             InitializeComponent();
         }
