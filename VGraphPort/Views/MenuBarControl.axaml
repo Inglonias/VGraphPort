@@ -88,7 +88,7 @@
                 </Grid>
             </Button>
             <ToggleButton x:Name="Eyedropper_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1">
-                <Image Source="avares://VGraphPort/images/Eyedropper.png"></Image>
+                <Image Source="avares://VGraphPort/Assets/Eyedropper.png"></Image>
             </ToggleButton>
         </DockPanel>
     </Grid>
