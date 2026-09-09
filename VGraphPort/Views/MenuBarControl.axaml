@@ -20,10 +20,10 @@
                 <MenuItem Header="Import"/>
                 <MenuItem Header="Export"/>
                 <Separator />
-                <MenuItem Header="_Export Settings">
-                    <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" />
-                    <MenuItem x:Name="ExportGridLines" Header="Export with Grid Lines"  IsChecked="True"  />
-                    <MenuItem x:Name="ExportBackgroundImage" Header="Export with Background Image"  IsChecked="False" />
+                <MenuItem Header="Export Settings">
+                    <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" ToggleType="CheckBox"/>
+                    <MenuItem x:Name="ExportGridLines" Header="Export with Grid Lines" ToggleType="CheckBox" IsChecked="True"  />
+                    <MenuItem x:Name="ExportBackgroundImage" Header="Export with Background Image" ToggleType="CheckBox" IsChecked="False" />
                 </MenuItem>
 
                 <Separator />
@@ -41,9 +41,9 @@
                 <MenuItem Header="Zoom In" />
                 <MenuItem Header="Zoom Out" />
                 <Separator />
-                <MenuItem Header="Show Center Lines" x:Name="CenterLinesButton"/>
-                <MenuItem Header="Show Grid Lines"  x:Name="GridLinesButton" />
-                <MenuItem Header="Show Background Image" />
+                <MenuItem x:Name="CenterLinesButton" Header="Show Center Lines" ToggleType="CheckBox" IsChecked="False"/>
+                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="BackgroundImageButton" Header="Show Background Image" ToggleType="CheckBox" IsChecked="True"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="Merge Lines" />
