@@ -84,6 +84,22 @@ namespace VGraphPort.DataLayers
 			return RedrawRequired;
 		}
 
+		public SKPointI GetRenderPoint()
+		{
+			if (ClickDragActive)
+			{
+				int renderX = Convert.ToInt32(Math.Min(CanvasPoint.X, ClickDragPoint.X));
+				int renderY = Convert.ToInt32(Math.Min(CanvasPoint.Y, ClickDragPoint.Y));
+				return new SKPointI(renderX, renderY);
+			}
+			int radius = Math.Max(1, PageData.Instance.SquareSize / 6);
+			return new SKPointI(CursorPoint.X - radius, CursorPoint.Y - radius);
+		}
+
+		public void ForceRedraw()
+		{
+			RedrawRequired = true;
+		}
 		public SKImage GenerateLayerImage()
 		{
 			if (!RedrawRequired)
@@ -132,23 +148,6 @@ namespace VGraphPort.DataLayers
 			brush.Dispose();
 			RedrawRequired = false;
 			return _lastImage;
-		}
-
-		public SKPointI GetRenderPoint()
-		{
-			if (ClickDragActive)
-			{
-				int renderX = Convert.ToInt32(Math.Min(CanvasPoint.X, ClickDragPoint.X));
-				int renderY = Convert.ToInt32(Math.Min(CanvasPoint.Y, ClickDragPoint.Y));
-				return new SKPointI(renderX, renderY);
-			}
-			int radius = Math.Max(1, PageData.Instance.SquareSize / 6);
-			return new SKPointI(CursorPoint.X - radius, CursorPoint.Y - radius);
-		}
-
-		public void ForceRedraw()
-		{
-			RedrawRequired = true;
 		}
 	}
 }

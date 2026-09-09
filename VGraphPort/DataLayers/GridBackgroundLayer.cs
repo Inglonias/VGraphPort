@@ -70,6 +70,16 @@ namespace VGraphPort.DataLayers
 			return true;
 		}
 
+		public SKPointI GetRenderPoint()
+		{
+			return new SKPointI(0, 0);
+		}
+
+		public bool IsRedrawRequired()
+		{
+			return RedrawRequired;
+		}
+
 		public SKImage GenerateLayerImage()
 		{
 			if (!RedrawRequired)
@@ -141,16 +151,6 @@ namespace VGraphPort.DataLayers
 
 			RedrawRequired = false;
 			return _lastImage;
-		}
-
-		public SKPointI GetRenderPoint()
-		{
-			return new SKPointI(0, 0);
-		}
-
-		public bool IsRedrawRequired()
-		{
-			return RedrawRequired;
 		}
 	}
 }
