@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace VGraphPort.objects
+namespace VGraphPort.Objects
 {
     /// <summary>
     /// This is a basic stack implementation with an array, except it has a soft cap on its capacity.

@@ -2,9 +2,9 @@ using System;
 using System.Drawing;
 using System.Text.Json.Serialization;
 using SkiaSharp;
-using VGraphPort.config;
+using VGraphPort.Config;
 
-namespace VGraphPort.objects
+namespace VGraphPort.Objects
 {
     public class LineSegment
     {

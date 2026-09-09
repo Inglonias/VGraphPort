@@ -6,7 +6,7 @@ using SkiaSharp;
 using VGraphPort.DataLayers;
 using VGraphPort.Views;
 
-namespace VGraphPort.config
+namespace VGraphPort.Config
 {
     //Singleton containing commonly used and modified properties and methods that require wide application access.
     public class PageData

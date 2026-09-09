@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using VGraphPort.objects;
 
-namespace VGraphPort.config
+namespace VGraphPort.Config
 {
     //Class used to serialize a canvas for saving and loading files.
     internal class VgpFile

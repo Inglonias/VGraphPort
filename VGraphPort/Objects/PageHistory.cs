@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace VGraphPort.objects
+namespace VGraphPort.Objects
 {
     //Singleton class containing the undo and redo histories for the current page.
     public class PageHistory

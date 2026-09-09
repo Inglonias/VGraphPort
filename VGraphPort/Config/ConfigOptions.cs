@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using SkiaSharp;
 
-namespace VGraphPort.config
+namespace VGraphPort.Config
 {
     public class ConfigOptions
     {
