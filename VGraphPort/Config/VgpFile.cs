@@ -11,9 +11,9 @@ namespace VGraphPort.Config
         public int SquareSize { get; set; }
         public int MarginX { get; set; }
         public int MarginY { get; set; }
-        public string BackgroundImagePath { get; set; }
+        public required string BackgroundImagePath { get; set; }
 
-        public List<LineSegment> Lines { get; set; }
-        public List<TextLabel> Labels { get; set; }
+        public required List<LineSegment> Lines { get; set; }
+        public required List<TextLabel> Labels { get; set; }
     }
 }

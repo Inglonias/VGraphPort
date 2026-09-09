@@ -6,7 +6,7 @@ namespace VGraphPort.DrawTools
 {
     public class TriangleTool : IDrawTool
     {
-        public LineSegment[] DrawWithTool(SKPointI start, SKPointI end)
+        public LineSegment[]? DrawWithTool(SKPointI start, SKPointI end)
         {
             if (start.Equals(end))
             {
@@ -23,7 +23,7 @@ namespace VGraphPort.DrawTools
             return rVal;
         }
 
-        public LineSegment[] DrawWithToolOdd(SKPointI start, SKPointI end)
+        public LineSegment[]? DrawWithToolOdd(SKPointI start, SKPointI end)
         {
             return DrawWithTool(start, end);
         }

@@ -23,14 +23,13 @@ namespace VGraphPort.DataLayers
 		public const string ELLIPSE_TOOL = "Ellipse_Tool";
 
 		public List<LineSegment> LineList { get; set; } = new List<LineSegment>();
-		private SKBitmap LastImage;
-		private bool RedrawRequired;
+		private bool _redrawRequired;
 		public bool PreviewPointActive = false;
 		private const int historyCapacity = 20;
 
 		public IDrawTool? SelectedTool { get; set; }
-		private SKImage _lastImage;
-		SKImage IDataLayer.LastImage => _lastImage;
+		private SKImage? _lastImage;
+		SKImage? IDataLayer.LastImage => _lastImage;
 		bool IDataLayer.DrawInExport => true;
 
 		public LineLayer()
@@ -83,7 +82,7 @@ namespace VGraphPort.DataLayers
 			{
 				if (line.LineColor == null)
 				{
-					line.LineColor = LineSegment.DEFAULT_COLOR.ToString();
+					line.LineColor = LineSegment.DefaultColor.ToString();
 				}
 				AddNewLine(line);
 			}
@@ -121,7 +120,7 @@ namespace VGraphPort.DataLayers
 				{
 					for (int j = i + 1; j < LineList.Count; j++)
 					{
-						LineSegment mergeResult = LineList[i].MergeLines(LineList[j]);
+						LineSegment? mergeResult = LineList[i].MergeLines(LineList[j]);
 						if (mergeResult != null)
 						{
 							LineList[i] = mergeResult;
@@ -329,7 +328,7 @@ namespace VGraphPort.DataLayers
 			foreach (LineSegment l in LineList)
 			{
 				double dist = l.LinePointDistance(point);
-				if (dist < LineSegment.SELECT_RADIUS)
+				if (dist < LineSegment.SelectRadius)
 				{
 					bool staySelected = l.IsSelected && maintainSelection;
 					if (staySelected && !l.WasLineSelected(dist, point))
@@ -369,7 +368,7 @@ namespace VGraphPort.DataLayers
 
 		public bool IsRedrawRequired()
 		{
-			return RedrawRequired || LineList.Count == 0;
+			return _redrawRequired || LineList.Count == 0;
 		}
 
 		public SKPointI GetRenderPoint()
@@ -418,15 +417,15 @@ namespace VGraphPort.DataLayers
 
 		public void ForceRedraw()
 		{
-			RedrawRequired = true;
+			_redrawRequired = true;
 		}
 
-		public SKImage GenerateLayerImage()
+		public SKImage? GenerateLayerImage()
 		{
 			int drawRadius = Math.Max(0, PageData.Instance.SquareSize / 6);
-			if (LastImage == null || IsRedrawRequired())
+			if (_lastImage == null || IsRedrawRequired())
 			{
-				RedrawRequired = false;
+				_redrawRequired = false;
 				SKRectI layerSize = GetLayerSize();
 				int canvasWidth = layerSize.Width;
 				int canvasHeight = layerSize.Height;
@@ -439,25 +438,25 @@ namespace VGraphPort.DataLayers
 
 				//Disposables
 
-				SKPaint selectedBrush = new SKPaint { Style = SKPaintStyle.StrokeAndFill, StrokeWidth = (float)(drawRadius + LineSegment.SELECT_RADIUS), Color = ConfigOptions.Instance.LineHighlightColor, IsAntialias = true };
+				SKPaint selectedBrush = new SKPaint { Style = SKPaintStyle.StrokeAndFill, StrokeWidth = (float)(drawRadius + LineSegment.SelectRadius), Color = ConfigOptions.Instance.LineHighlightColor, IsAntialias = true };
 				SKPaint standardBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = drawRadius, Color = SKColors.Blue, IsAntialias = true };
 
 				SKPointI topLeft = GetRenderPoint();
 				foreach (LineSegment line in LineList)
 				{
-					SKColor lineColor = LineSegment.DEFAULT_COLOR;
+					SKColor lineColor = LineSegment.DefaultColor;
 					SKColor.TryParse(line.LineColor, out lineColor);
 					standardBrush.Color = lineColor;
 					SKPointI[] canvasPoints = line.GetCanvasPoints();
-					canvasPoints[LineSegment.START].X -= topLeft.X;
-					canvasPoints[LineSegment.START].Y -= topLeft.Y;
-					canvasPoints[LineSegment.END].X -= topLeft.X;
-					canvasPoints[LineSegment.END].Y -= topLeft.Y;
+					canvasPoints[LineSegment.Start].X -= topLeft.X;
+					canvasPoints[LineSegment.Start].Y -= topLeft.Y;
+					canvasPoints[LineSegment.End].X -= topLeft.X;
+					canvasPoints[LineSegment.End].Y -= topLeft.Y;
 					if (line.IsSelected)
 					{
-						drawingCanvas.DrawLine(canvasPoints[LineSegment.START], canvasPoints[LineSegment.END], selectedBrush);
+						drawingCanvas.DrawLine(canvasPoints[LineSegment.Start], canvasPoints[LineSegment.End], selectedBrush);
 					}
-					drawingCanvas.DrawLine(canvasPoints[LineSegment.START], canvasPoints[LineSegment.END], standardBrush);
+					drawingCanvas.DrawLine(canvasPoints[LineSegment.Start], canvasPoints[LineSegment.End], standardBrush);
 				}
 				//Dispose of them.
 				if (_lastImage != null)
@@ -468,7 +467,7 @@ namespace VGraphPort.DataLayers
 				drawingSurface.Dispose();
 				selectedBrush.Dispose();
 				standardBrush.Dispose();
-				RedrawRequired = false;
+				_redrawRequired = false;
 			}
 			return _lastImage;
 		}

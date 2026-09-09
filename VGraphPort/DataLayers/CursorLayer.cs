@@ -11,7 +11,7 @@ namespace VGraphPort.DataLayers
 {
 	public class CursorLayer : IDataLayer
 	{
-		private bool RedrawRequired = true;
+		private bool _redrawRequired = true;
 		public bool ClickDragActive { get; private set; } = false;
 		private Point _canvasPoint;
 		public Point CanvasPoint { get { return _canvasPoint; } set { _canvasPoint = value; /* TODO: Scaling awareness */ } }
@@ -19,8 +19,8 @@ namespace VGraphPort.DataLayers
 		public SKPointI LastCursorPoint = new SKPointI(0, 0);
 		public SKPointI CursorPoint { get; set; } = new SKPointI(0, 0);
 		bool IDataLayer.DrawInExport => false;
-		private SKImage _lastImage;
-		SKImage IDataLayer.LastImage => _lastImage;
+		private SKImage? _lastImage;
+		SKImage? IDataLayer.LastImage => _lastImage;
 
 		/// <summary>
 		/// Get the nearest grid point to the cursor's position. This function is used to convert a screen-related point to a grid-related point for the cursor, and its result is displayed in the status bar at the bottom of the screen.
@@ -81,7 +81,7 @@ namespace VGraphPort.DataLayers
 
 		public bool IsRedrawRequired()
 		{
-			return RedrawRequired;
+			return _redrawRequired;
 		}
 
 		public SKPointI GetRenderPoint()
@@ -98,11 +98,11 @@ namespace VGraphPort.DataLayers
 
 		public void ForceRedraw()
 		{
-			RedrawRequired = true;
+			_redrawRequired = true;
 		}
-		public SKImage GenerateLayerImage()
+		public SKImage? GenerateLayerImage()
 		{
-			if (!RedrawRequired)
+			if (!_redrawRequired)
 			{
 				return _lastImage;
 			}
@@ -145,7 +145,7 @@ namespace VGraphPort.DataLayers
 			_lastImage = drawingSurface.Snapshot();
 			drawingSurface.Dispose();
 			brush.Dispose();
-			RedrawRequired = false;
+			_redrawRequired = false;
 			return _lastImage;
 		}
 	}

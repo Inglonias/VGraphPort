@@ -8,21 +8,23 @@ namespace VGraphPort.Objects
 {
     public class LineSegment
     {
-        public static readonly int START = 0;
-        public static readonly int END = 1;
-        public static readonly SKColor DEFAULT_COLOR = ConfigOptions.Instance.DefaultLineColor;
+        public static readonly int Start = 0;
+        public static readonly int End = 1;
+        public static readonly SKColor DefaultColor = ConfigOptions.Instance.DefaultLineColor;
 
-        [JsonIgnore]
-        public readonly static double SELECT_RADIUS = 5;
+        [JsonIgnore] public const double SelectRadius = 5;
+
         public SKPointI StartPointGrid { get; set; }
         public SKPointI EndPointGrid { get; set; }
         public string LineColor { get; set; } //Stored as #AARRGGBB due to serialization issues with SKColor
         [JsonIgnore]
         public bool IsSelected { get; set; } = false;
 
+        private const double Tolerance = 0.0000001;
+
         public LineSegment()
         {
-            LineColor = DEFAULT_COLOR.ToString();
+            LineColor = DefaultColor.ToString();
         }
 
         public LineSegment(SKPointI startPoint, SKPointI endPoint)
@@ -52,8 +54,8 @@ namespace VGraphPort.Objects
             int endX = (EndPointGrid.X * PageData.Instance.SquareSize) + PageData.Instance.MarginX;
             int endY = (EndPointGrid.Y * PageData.Instance.SquareSize) + PageData.Instance.MarginY;
 
-            rVal[START] = new SKPointI(startX, startY);
-            rVal[END] = new SKPointI(endX, endY);
+            rVal[Start] = new SKPointI(startX, startY);
+            rVal[End] = new SKPointI(endX, endY);
 
             return rVal;
         }
@@ -67,8 +69,8 @@ namespace VGraphPort.Objects
         {
             SKPointI[] canvasPoints = GetCanvasPoints();
 
-            Point pointA = new Point(canvasPoints[START].X, canvasPoints[START].Y);
-            Point pointB = new Point(canvasPoints[END].X, canvasPoints[END].Y);
+            Point pointA = new Point(canvasPoints[Start].X, canvasPoints[Start].Y);
+            Point pointB = new Point(canvasPoints[End].X, canvasPoints[End].Y);
 
             //Heron's formula. This is one I had not heard of before!
             double abX = Math.Abs(pointB.X - pointA.X);
@@ -111,10 +113,10 @@ namespace VGraphPort.Objects
         {
             //Sanity check for co-linear clicks.
             SKPointI[] endpoints = GetCanvasPoints();
-            double minX = Math.Min(endpoints[START].X, endpoints[END].X) - SELECT_RADIUS;
-            double maxX = Math.Max(endpoints[START].X, endpoints[END].X) + SELECT_RADIUS;
-            double minY = Math.Min(endpoints[START].Y, endpoints[END].Y) - SELECT_RADIUS;
-            double maxY = Math.Max(endpoints[START].Y, endpoints[END].Y) + SELECT_RADIUS;
+            double minX = Math.Min(endpoints[Start].X, endpoints[End].X) - SelectRadius;
+            double maxX = Math.Max(endpoints[Start].X, endpoints[End].X) + SelectRadius;
+            double minY = Math.Min(endpoints[Start].Y, endpoints[End].Y) - SelectRadius;
+            double maxY = Math.Max(endpoints[Start].Y, endpoints[End].Y) + SelectRadius;
 
             bool rVal;
             if ((clickPoint.X < minX) || (clickPoint.Y < minY) || (clickPoint.X > maxX) || (clickPoint.Y > maxY))
@@ -122,7 +124,7 @@ namespace VGraphPort.Objects
                 rVal = false;
                 return rVal;
             }
-            rVal = dist < SELECT_RADIUS;
+            rVal = dist < SelectRadius;
             return rVal;
         }
         
@@ -134,7 +136,7 @@ namespace VGraphPort.Objects
         public bool WasLineSelected(SKRect boundingBox)
         {
             SKPointI[] endpoints = GetCanvasPoints();
-            return (boundingBox.Contains(endpoints[START]) && boundingBox.Contains(endpoints[END]));
+            return (boundingBox.Contains(endpoints[Start]) && boundingBox.Contains(endpoints[End]));
         }
         
         /// <summary>
@@ -142,7 +144,7 @@ namespace VGraphPort.Objects
         /// </summary>
         /// <param name="target">The other line segment to attempt to merge with.</param>
         /// <returns>The merged line segment if the merge was successful. Null otherwise.</returns>
-        public LineSegment MergeLines(LineSegment target)
+        public LineSegment? MergeLines(LineSegment target)
         {
             SKPointI endpointA;
             SKPointI endpointB;
@@ -188,7 +190,7 @@ namespace VGraphPort.Objects
             {
                 return null;
             }
-            if ((double.IsInfinity(slopeA) && double.IsInfinity(slopeB)) || (slopeA == slopeB))
+            if ((double.IsInfinity(slopeA) && double.IsInfinity(slopeB)) || (Math.Abs(slopeA - slopeB) < Tolerance))
             {
                 return new LineSegment(endpointA, endpointB, LineColor);
             }
@@ -242,7 +244,7 @@ namespace VGraphPort.Objects
         //    return new SKColor(red, grn, blu);
         //}
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if ((o == null) || !this.GetType().Equals(o.GetType()))
             {

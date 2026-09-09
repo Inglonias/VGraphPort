@@ -12,7 +12,7 @@ namespace VGraphPort.DrawTools
         /// <param name="start">The starting grid point of whatever you are drawing.</param>
         /// <param name="end">The ending grid point of whatever you are drawing.</param>
         /// <returns>An array of line segments to be drawn to the canvas.</returns>
-        LineSegment[] DrawWithTool(SKPointI start, SKPointI end);
+        LineSegment[]? DrawWithTool(SKPointI start, SKPointI end);
 
         /// <summary>
         /// For some tools, it may be desirable to be able to have radii of 1.5, 2.5, etc.
@@ -23,7 +23,7 @@ namespace VGraphPort.DrawTools
         /// <param name="start">The starting grid point of whatever you are drawing.</param>
         /// <param name="end">The ending grid point of whatever you are drawing.</param>
         /// <returns>An array of line segments to be drawn to the canvas.</returns>
-        LineSegment[] DrawWithToolOdd(SKPointI start, SKPointI end);
+        LineSegment[]? DrawWithToolOdd(SKPointI start, SKPointI end);
 
         string GenerateStatusText(SKPointI start, SKPointI end);
     }

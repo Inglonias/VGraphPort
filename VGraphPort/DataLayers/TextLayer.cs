@@ -13,18 +13,18 @@ namespace VGraphPort.DataLayers
 {
 	public class TextLayer : IDataLayer
 	{
-		private bool RedrawRequired = false;
+		private bool _redrawRequired = false;
 		public List<TextLabel> LabelList { get; set; } = new List<TextLabel>();
 		public bool ToolActive { get; private set; } = false;
-		private string CurrentFontFamily = "Arial";
-		private int CurrentFontSize = 12;
+		private string _currentFontFamily = "Arial";
+		private int _currentFontSize = 12;
 		bool IDataLayer.DrawInExport => false;
-		private SKImage _lastImage;
-		SKImage IDataLayer.LastImage => _lastImage;
+		private SKImage? _lastImage;
+		SKImage? IDataLayer.LastImage => _lastImage;
 
 		public void ForceRedraw()
 		{
-			RedrawRequired = true;
+			_redrawRequired = true;
 		}
 
 		public SKPointI GetRenderPoint()
@@ -70,7 +70,7 @@ namespace VGraphPort.DataLayers
 
 		public bool IsRedrawRequired()
 		{
-			return RedrawRequired;
+			return _redrawRequired;
 		}
 
 		public void AddTextLabel(SKPointI renderPoint, string labelText, string labelColor, string fontName, int fontSize, int alignment, bool oddMode)
@@ -94,8 +94,8 @@ namespace VGraphPort.DataLayers
 			}
 			SKColor color = PageData.Instance.CurrentLineColor;
 			//LabelPropertiesWindow lpw = new LabelPropertiesWindow();
-			//lpw.TextBoxFontSize.Text = CurrentFontSize.ToString();
-			//lpw.ComboBoxFonts.SelectedItem = new FontFamily(CurrentFontFamily);
+			//lpw.TextBoxFontSize.Text = _currentFontSize.ToString();
+			//lpw.ComboBoxFonts.SelectedItem = new FontFamily(_currentFontFamily);
 			//lpw.TargetGridPoint = targetGrid;
 			//lpw.Show();
 		}
@@ -246,11 +246,11 @@ namespace VGraphPort.DataLayers
 			ForceRedraw();
 		}
 
-		public SKImage GenerateLayerImage()
+		public SKImage? GenerateLayerImage()
 		{
-			if (_lastImage == null || IsRedrawRequired())
+			if (IsRedrawRequired())
 			{
-				RedrawRequired = false;
+				_redrawRequired = false;
 				SKRectI layerSize = GetLayerRect();
 				int canvasWidth = layerSize.Width;
 				int canvasHeight = layerSize.Height;
@@ -286,7 +286,7 @@ namespace VGraphPort.DataLayers
 				//Dispose of them.
 				drawingSurface.Dispose();
 				standardBrush.Dispose();
-				RedrawRequired = false;
+				_redrawRequired = false;
 			}
 
 			return _lastImage;

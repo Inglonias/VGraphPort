@@ -67,16 +67,19 @@ namespace VGraphPort.Config
 
         public static void LoadConfigFile()
         {
-            ConfigOptions target = JsonSerializer.Deserialize<ConfigOptions>(File.ReadAllText(CONFIG_FILE_NAME));
-            target.BackgroundPaperColor = SKColor.Parse(target.BackgroundPaperColorString);
-            target.BorderLinesColor = SKColor.Parse(target.BorderLinesColorString);
-            target.CenterLinesColor = SKColor.Parse(target.CenterLinesColorString);
-            target.CursorColor = SKColor.Parse(target.CursorColorString);
-            target.DefaultLineColor = SKColor.Parse(target.DefaultLineColorString);
-            target.GridLinesColor = SKColor.Parse(target.GridLinesColorString);
-            target.LineHighlightColor = SKColor.Parse(target.LineHighlightColorString);
-            target.SelectionBoxColor = SKColor.Parse(target.SelectionBoxColorString);
-            Instance = target;
+            ConfigOptions? target = JsonSerializer.Deserialize<ConfigOptions>(File.ReadAllText(CONFIG_FILE_NAME));
+            if (target != null)
+            {
+                target.BackgroundPaperColor = SKColor.Parse(target.BackgroundPaperColorString);
+                target.BorderLinesColor = SKColor.Parse(target.BorderLinesColorString);
+                target.CenterLinesColor = SKColor.Parse(target.CenterLinesColorString);
+                target.CursorColor = SKColor.Parse(target.CursorColorString);
+                target.DefaultLineColor = SKColor.Parse(target.DefaultLineColorString);
+                target.GridLinesColor = SKColor.Parse(target.GridLinesColorString);
+                target.LineHighlightColor = SKColor.Parse(target.LineHighlightColorString);
+                target.SelectionBoxColor = SKColor.Parse(target.SelectionBoxColorString);
+                Instance = target;
+            }
         }
 
         //This is a custom JSON serializer that produces pretty output. This will require more work from me if I add more config options, but... ehhh...

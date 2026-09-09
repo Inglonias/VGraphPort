@@ -6,7 +6,7 @@ namespace VGraphPort.DrawTools
 {
     public class LineTool : IDrawTool
     {
-        public LineSegment[] DrawWithTool(SKPointI start, SKPointI end)
+        public LineSegment[]? DrawWithTool(SKPointI start, SKPointI end)
         {
             LineSegment[] rVal = new LineSegment[1];
             if (start.Equals(end))
@@ -18,7 +18,7 @@ namespace VGraphPort.DrawTools
             return rVal;
         }
 
-        public LineSegment[] DrawWithToolOdd(SKPointI start, SKPointI end)
+        public LineSegment[]? DrawWithToolOdd(SKPointI start, SKPointI end)
         {
             return DrawWithTool(start, end);
         }

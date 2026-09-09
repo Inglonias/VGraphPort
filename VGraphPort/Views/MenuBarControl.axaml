@@ -21,7 +21,7 @@
                 <MenuItem Header="Export"/>
                 <Separator />
                 <MenuItem Header="Export Settings">
-                    <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" ToggleType="CheckBox"/>
+                    <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" ToggleType="CheckBox" IsChecked="False"/>
                     <MenuItem x:Name="ExportGridLines" Header="Export with Grid Lines" ToggleType="CheckBox" IsChecked="True"  />
                     <MenuItem x:Name="ExportBackgroundImage" Header="Export with Background Image" ToggleType="CheckBox" IsChecked="False" />
                 </MenuItem>

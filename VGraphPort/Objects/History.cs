@@ -26,7 +26,7 @@ namespace VGraphPort.Objects
             }
             Count--;
             T rVal = HistArray[Count];
-            HistArray[Count] = default;
+            HistArray[Count] = default!;
             return rVal;
         }
 
@@ -56,7 +56,7 @@ namespace VGraphPort.Objects
             Count = 0;
             for (int i = 0; i < HistArray.Length; i++)
             {
-                HistArray[i] = default;
+                HistArray[i] = default!;
             }
         }
 

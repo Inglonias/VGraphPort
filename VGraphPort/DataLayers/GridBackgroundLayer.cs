@@ -6,14 +6,14 @@ namespace VGraphPort.DataLayers
 {
 	public class GridBackgroundLayer : IDataLayer
 	{
-		private bool RedrawRequired = true;
+		private bool _redrawRequired = true;
 		public bool DrawCenterLines { get; set; } = false;
 		public bool DrawGridLines { get; set; } = true;
 
 		public bool DrawBackgroundImage { get; set; } = true;
-		private SKImage OriginalBackgroundImage = null;
-		private SKImage _lastImage;
-		SKImage IDataLayer.LastImage => _lastImage;
+		private SKImage? _originalBackgroundImage = null;
+		private SKImage? _lastImage;
+		SKImage? IDataLayer.LastImage => _lastImage;
 		public SKImageInfo BackgroundImageOriginalInfo { get; private set; }
 
 
@@ -45,14 +45,14 @@ namespace VGraphPort.DataLayers
 
 		public void ForceRedraw()
 		{
-			RedrawRequired = true;
+			_redrawRequired = true;
 		}
 
 		public bool SetBackgroundImage(string path)
 		{
 			if (path == null || path.Length == 0)
 			{
-				OriginalBackgroundImage = null;
+				_originalBackgroundImage = null;
 				return true;
 			}
 			SKFileStream imageStream = new SKFileStream(path);
@@ -61,9 +61,9 @@ namespace VGraphPort.DataLayers
 				return false;
 			}
 
-			OriginalBackgroundImage = SKImage.FromBitmap(SKBitmap.Decode(imageStream));
-			BackgroundImageOriginalInfo = OriginalBackgroundImage.Info;
-			if (OriginalBackgroundImage == null)
+			_originalBackgroundImage = SKImage.FromBitmap(SKBitmap.Decode(imageStream));
+			BackgroundImageOriginalInfo = _originalBackgroundImage.Info;
+			if (_originalBackgroundImage == null)
 			{
 				return false;
 			}
@@ -77,12 +77,12 @@ namespace VGraphPort.DataLayers
 
 		public bool IsRedrawRequired()
 		{
-			return RedrawRequired;
+			return _redrawRequired;
 		}
 
-		public SKImage GenerateLayerImage()
+		public SKImage? GenerateLayerImage()
 		{
-			if (!RedrawRequired)
+			if (!_redrawRequired)
 			{
 				return _lastImage;
 			}
@@ -95,12 +95,12 @@ namespace VGraphPort.DataLayers
 			SKPaint gridBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 1, Color = ConfigOptions.Instance.GridLinesColor };
 
 			//Draw the background image within the border.
-			if (OriginalBackgroundImage != null && DrawBackgroundImage)
+			if (_originalBackgroundImage != null && DrawBackgroundImage)
 			{
 				SKRect gridSize = SKRect.Create(new SKSize(PageData.Instance.SquaresWide * PageData.Instance.SquareSize, PageData.Instance.SquaresTall * PageData.Instance.SquareSize));
 				SKPaint alphaPaint = new SKPaint();
 				alphaPaint.Color = alphaPaint.Color.WithAlpha(PageData.Instance.BackgroundImageAlpha);
-				drawingCanvas.DrawImage(OriginalBackgroundImage, gridSize, alphaPaint);
+				drawingCanvas.DrawImage(_originalBackgroundImage, gridSize, alphaPaint);
 			}
 
 			if (DrawGridLines)
@@ -149,7 +149,7 @@ namespace VGraphPort.DataLayers
 			borderBrush.Dispose();
 
 
-			RedrawRequired = false;
+			_redrawRequired = false;
 			return _lastImage;
 		}
 	}
