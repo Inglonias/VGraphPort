@@ -15,7 +15,7 @@ namespace VGraphPort.DataLayers
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		public bool Equals(ICustomDrawOperation? other)
@@ -25,7 +25,7 @@ namespace VGraphPort.DataLayers
 
 		public bool HitTest(Point p)
 		{
-			return false;
+			return Bounds.Contains(p);
 		}
 
 		private Rect GetBounds()
@@ -44,7 +44,8 @@ namespace VGraphPort.DataLayers
 
 			foreach (var layer in Layers)
 			{
-				lease.SkCanvas.DrawImage(layer.LastImage, 0, 0);
+				var renderPoint = layer.GetRenderPoint();
+				lease.SkCanvas.DrawImage(layer.GenerateLayerImage(), renderPoint.X, renderPoint.Y);
 			}
 		}
 	}
