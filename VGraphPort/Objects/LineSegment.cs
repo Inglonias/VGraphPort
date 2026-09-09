@@ -254,5 +254,10 @@ namespace VGraphPort.Objects
             return (this.StartPointGrid.Equals(other.StartPointGrid) && this.EndPointGrid.Equals(other.EndPointGrid)) ||
                    (this.StartPointGrid.Equals(other.EndPointGrid) && this.EndPointGrid.Equals(other.StartPointGrid));
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
