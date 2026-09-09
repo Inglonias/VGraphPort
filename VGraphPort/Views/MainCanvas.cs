@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Threading;
 using SkiaSharp;
+using System;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
 
@@ -17,7 +19,7 @@ public class MainCanvas : Control
 	CursorLayer LCursor = new CursorLayer();
 	PreviewLayer LPreview = new PreviewLayer();
 	LayerDrawOperation DrawOp = new LayerDrawOperation();
-
+	private bool _redrawPending = true;
 	public MainCanvas()
 	{
 		DrawOp.Layers.Add(LGrid);
@@ -26,6 +28,28 @@ public class MainCanvas : Control
 		DrawOp.Layers.Add(LCursor);
 		DrawOp.Layers.Add(LPreview);
 		AssignPageData();
+		DispatcherTimer timer = new()
+		{
+			Interval = TimeSpan.FromMilliseconds(16.67) // 60 FPS
+		};
+
+		timer.Tick += (_, _) =>
+		{
+			if (_redrawPending)
+			{
+				_redrawPending = false;
+				foreach (var layer in DrawOp.Layers)
+				{
+					if (layer.IsRedrawRequired())
+					{
+						InvalidateVisual();
+						break;
+					}
+				}
+			}
+		};
+
+		timer.Start();
 	}
 
 	private void AssignPageData()
@@ -47,14 +71,8 @@ public class MainCanvas : Control
 		base.OnPointerMoved(e);
 		var position = e.GetPosition(this);
 		LCursor.MoveCursor(position);
-		foreach (var layer in DrawOp.Layers)
-		{
-			if (layer.IsRedrawRequired())
-			{
-				InvalidateVisual();
-				break;
-			}
-		}
+		_redrawPending = true;
+
 	}
 	protected override Size MeasureOverride(Size availableSize)
 	{
