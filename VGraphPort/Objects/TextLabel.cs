@@ -1,6 +1,6 @@
 using System;
-using System.Drawing;
 using System.Text.Json.Serialization;
+using Avalonia;
 using SkiaSharp;
 using VGraphPort.Config;
 
@@ -99,8 +99,8 @@ namespace VGraphPort.Objects
         public bool WasLabelSelected(Point clickPoint)
         {
             SKRectI rect = GetCanvasRect();
-            int x = clickPoint.X;
-            int y = clickPoint.Y;
+            int x = (int)clickPoint.X;
+            int y = (int)clickPoint.Y;
             SKPointI skClickPoint = new SKPointI(x, y);
             return rect.Contains(skClickPoint);
         }
