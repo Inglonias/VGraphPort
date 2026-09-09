@@ -45,7 +45,10 @@ namespace VGraphPort.DataLayers
 			foreach (var layer in Layers)
 			{
 				var renderPoint = layer.GetRenderPoint();
-				lease.SkCanvas.DrawImage(layer.GenerateLayerImage(), renderPoint.X, renderPoint.Y);
+				if (layer.GenerateLayerImage() != null)
+				{
+					lease.SkCanvas.DrawImage(layer.GenerateLayerImage(), renderPoint.X, renderPoint.Y);
+				}
 			}
 		}
 	}
