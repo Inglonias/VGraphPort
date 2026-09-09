@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using SkiaSharp;
+using VGraphPort.Config;
 using VGraphPort.DataLayers;
 
 namespace VGraphPort.Views;
@@ -11,13 +12,29 @@ namespace VGraphPort.Views;
 public class MainCanvas : Control
 {
 	GridBackgroundLayer LGrid = new GridBackgroundLayer();
+	LineLayer LLines = new LineLayer();
+	TextLayer LText = new TextLayer();
 	CursorLayer LCursor = new CursorLayer();
+	PreviewLayer LPreview = new PreviewLayer();
 	LayerDrawOperation DrawOp = new LayerDrawOperation();
 
 	public MainCanvas()
 	{
 		DrawOp.Layers.Add(LGrid);
+		DrawOp.Layers.Add(LLines);
+		DrawOp.Layers.Add(LText);
 		DrawOp.Layers.Add(LCursor);
+		DrawOp.Layers.Add(LPreview);
+		AssignPageData();
+	}
+
+	private void AssignPageData()
+	{
+		PageData.Instance.GetDataLayers()[PageData.GRID_LAYER] = LGrid;
+		PageData.Instance.GetDataLayers()[PageData.LINE_LAYER] = LLines;
+		PageData.Instance.GetDataLayers()[PageData.PREVIEW_LAYER] = LPreview;
+		PageData.Instance.GetDataLayers()[PageData.TEXT_LAYER] = LText;
+		PageData.Instance.GetDataLayers()[PageData.CURSOR_LAYER] = LCursor;
 	}
 
 	public override void Render(DrawingContext context)
