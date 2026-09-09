@@ -430,12 +430,12 @@ namespace VGraphPort.DataLayers
 				SKRectI layerSize = GetLayerSize();
 				int canvasWidth = layerSize.Width;
 				int canvasHeight = layerSize.Height;
-				SKSurface drawingSurface = SKSurface.Create(new SKImageInfo(canvasWidth, canvasHeight));
-				var drawingCanvas = drawingSurface.Canvas;
 				if (canvasWidth < 1 || canvasHeight < 1)
 				{
 					return null;
 				}
+				SKSurface drawingSurface = SKSurface.Create(new SKImageInfo(canvasWidth, canvasHeight));
+				var drawingCanvas = drawingSurface.Canvas;
 
 				//Disposables
 
@@ -459,12 +459,12 @@ namespace VGraphPort.DataLayers
 					}
 					drawingCanvas.DrawLine(canvasPoints[LineSegment.START], canvasPoints[LineSegment.END], standardBrush);
 				}
+				//Dispose of them.
 				if (_lastImage != null)
 				{
 					_lastImage.Dispose();
 				}
 				_lastImage = drawingSurface.Snapshot();
-				//Dispose of them.
 				drawingSurface.Dispose();
 				selectedBrush.Dispose();
 				standardBrush.Dispose();

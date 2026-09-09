@@ -138,7 +138,6 @@ namespace VGraphPort.DataLayers
 			}
 
 			//Dispose of them.
-
 			if (_lastImage != null)
 			{
 				_lastImage.Dispose();

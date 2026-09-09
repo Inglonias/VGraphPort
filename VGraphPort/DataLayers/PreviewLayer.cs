@@ -198,16 +198,15 @@ namespace VGraphPort.DataLayers
 				{
 					PreviewLines = null;
 				}
-
 				//Dispose of them.
-				drawingSurface.Dispose();
-				previewBrush.Dispose();
-
 				if (_lastImage != null)
 				{
 					_lastImage.Dispose();
 				}
 				_lastImage = drawingSurface.Snapshot();
+				drawingSurface.Dispose();
+				previewBrush.Dispose();
+
 			}
 
 			return _lastImage;
