@@ -24,7 +24,9 @@
 		<DockPanel Grid.Row="0">
 			<local:MenuBarControl></local:MenuBarControl>
 		</DockPanel>
-		<local:MainCanvas Grid.Row="1"/>
+		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+			<local:MainCanvas />
+		</ScrollViewer>
 	</Grid>
 
 </Window>
