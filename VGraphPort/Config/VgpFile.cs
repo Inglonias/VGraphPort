@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using VGraphPort.objects;
+using VGraphPort.Objects;
 
 namespace VGraphPort.Config
 {
