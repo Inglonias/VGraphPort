@@ -1,160 +1,156 @@
 using SkiaSharp;
-using VGraphPort.config;
+using System;
+using VGraphPort.Config;
 
 namespace VGraphPort.DataLayers
 {
-    public class GridBackgroundLayer : IDataLayer
-    {
-        bool IDataLayer.DrawInExport => true;
+	public class GridBackgroundLayer : IDataLayer
+	{
+		private bool RedrawRequired = true;
+		public bool DrawCenterLines { get; set; } = false;
+		public bool DrawGridLines { get; set; } = true;
 
-        private bool RedrawRequired = true;
+		public bool DrawBackgroundImage { get; set; } = true;
+		private SKImage OriginalBackgroundImage = null;
+		private SKImage _lastImage;
+		SKImage IDataLayer.LastImage => _lastImage;
+		public SKImageInfo BackgroundImageOriginalInfo { get; private set; }
 
-        public bool DrawCenterLines { get; set; } = false;
-        public bool DrawGridLines { get; set; } = true;
 
-        public bool DrawBackgroundImage { get; set; } = true;
+		bool IDataLayer.DrawInExport => true;
 
-        private SKBitmap OriginalBackgroundImage = null;
+		public GridBackgroundLayer()
+		{
+		}
 
-        public SKImageInfo BackgroundImageOriginalInfo { get; private set; }
-        private SKBitmap LastImage = null;
+		public bool ToggleCenterLines()
+		{
+			DrawCenterLines = !DrawCenterLines;
+			ForceRedraw();
+			return DrawCenterLines;
+		}
+		public bool ToggleGridLines()
+		{
+			DrawGridLines = !DrawGridLines;
+			ForceRedraw();
+			return DrawGridLines;
+		}
 
-        public GridBackgroundLayer()
-        {
-        }
+		public bool ToggleBackgroundImage()
+		{
+			DrawBackgroundImage = !DrawBackgroundImage;
+			ForceRedraw();
+			return DrawBackgroundImage;
+		}
 
-        public bool SetBackgroundImage(string path)
-        {
-            if (path == null || path.Length == 0)
-            {
-                OriginalBackgroundImage = null;
-                return true;
-            }
-            SKFileStream imageStream = new SKFileStream(path);
-            if (!imageStream.IsValid)
-            {
-                return false;
-            }
+		public void ForceRedraw()
+		{
+			RedrawRequired = true;
+		}
 
-            OriginalBackgroundImage = SKBitmap.Decode(imageStream);
-            BackgroundImageOriginalInfo = OriginalBackgroundImage.Info;
-            if (OriginalBackgroundImage == null)
-            {
-                return false;
-            }
-            return true;
-        }
+		public bool SetBackgroundImage(string path)
+		{
+			if (path == null || path.Length == 0)
+			{
+				OriginalBackgroundImage = null;
+				return true;
+			}
+			SKFileStream imageStream = new SKFileStream(path);
+			if (!imageStream.IsValid)
+			{
+				return false;
+			}
 
-        public bool ToggleCenterLines()
-        {
-            DrawCenterLines = !DrawCenterLines;
-            ForceRedraw();
-            return DrawCenterLines;
-        }
-        public bool ToggleGridLines()
-        {
-            DrawGridLines = !DrawGridLines;
-            ForceRedraw();
-            return DrawGridLines;
-        }
+			OriginalBackgroundImage = SKImage.FromBitmap(SKBitmap.Decode(imageStream));
+			BackgroundImageOriginalInfo = OriginalBackgroundImage.Info;
+			if (OriginalBackgroundImage == null)
+			{
+				return false;
+			}
+			return true;
+		}
 
-        public bool ToggleBackgroundImage()
-        {
-            DrawBackgroundImage = !DrawBackgroundImage;
-            ForceRedraw();
-            return DrawBackgroundImage;
-        }
+		public SKImage GenerateLayerImage()
+		{
+			if (!RedrawRequired)
+			{
+				return _lastImage;
+			}
+			int canvasWidth = PageData.Instance.GetTotalWidth();
+			int canvasHeight = PageData.Instance.GetTotalHeight();
+			SKSurface drawingSurface = SKSurface.Create(new SKImageInfo(canvasWidth, canvasHeight));
+			var drawingCanvas = drawingSurface.Canvas;
 
-        public SKBitmap GenerateLayerBitmap()
-        {
-            if (!RedrawRequired)
-            {
-                return LastImage;
-            }
-            int canvasWidth = PageData.Instance.GetTotalWidth();
-            int canvasHeight = PageData.Instance.GetTotalHeight();
-            //Disposables
+			drawingCanvas.Clear(ConfigOptions.Instance.BackgroundPaperColor);
+			SKPaint gridBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 1, Color = ConfigOptions.Instance.GridLinesColor };
 
-            SKBitmap image = new SKBitmap(new SKImageInfo(canvasWidth, canvasHeight));
-            SKCanvas drawingSurface = new SKCanvas(image);
+			//Draw the background image within the border.
+			if (OriginalBackgroundImage != null && DrawBackgroundImage)
+			{
+				SKRect gridSize = SKRect.Create(new SKSize(PageData.Instance.SquaresWide * PageData.Instance.SquareSize, PageData.Instance.SquaresTall * PageData.Instance.SquareSize));
+				SKPaint alphaPaint = new SKPaint();
+				alphaPaint.Color = alphaPaint.Color.WithAlpha(PageData.Instance.BackgroundImageAlpha);
+				drawingCanvas.DrawImage(OriginalBackgroundImage, gridSize, alphaPaint);
+			}
 
-            drawingSurface.Clear(ConfigOptions.Instance.BackgroundPaperColor);
-            SKPaint gridBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 1, Color = ConfigOptions.Instance.GridLinesColor };
+			if (DrawGridLines)
+			{
+				for (int x = 0; x <= PageData.Instance.SquaresWide; x++)
+				{
+					int xStart = (x * PageData.Instance.SquareSize) + PageData.Instance.MarginX;
+					int yStart = PageData.Instance.MarginY;
+					int yEnd = PageData.Instance.GetTotalHeight() - PageData.Instance.MarginY;
+					drawingCanvas.DrawLine(new SKPointI(xStart, yStart), new SKPointI(xStart, yEnd), gridBrush);
+				}
+				for (int y = 0; y <= PageData.Instance.SquaresTall; y++)
+				{
+					int xStart = PageData.Instance.MarginX;
+					int yStart = (y * PageData.Instance.SquareSize) + PageData.Instance.MarginY;
+					int xEnd = PageData.Instance.GetTotalWidth() - PageData.Instance.MarginX;
+					drawingCanvas.DrawLine(new SKPointI(xStart, yStart), new SKPointI(xEnd, yStart), gridBrush);
+				}
+			}
 
-            //Draw the background image within the border.
-            if (OriginalBackgroundImage != null && DrawBackgroundImage)
-            {
-                SKImageInfo gridSize = new SKImageInfo(PageData.Instance.SquaresWide * PageData.Instance.SquareSize,
-                                                       PageData.Instance.SquaresTall * PageData.Instance.SquareSize);
-                SKBitmap backgroundImage = OriginalBackgroundImage.Resize(gridSize, SKFilterQuality.None);
-                SKPaint alphaPaint = new SKPaint();
-                alphaPaint.Color = alphaPaint.Color.WithAlpha(PageData.Instance.BackgroundImageAlpha);
-                drawingSurface.DrawBitmap(backgroundImage, new SKPointI(PageData.Instance.MarginX, PageData.Instance.MarginY), alphaPaint);
-                backgroundImage.Dispose();
-            }
+			int quarterMarginX = PageData.Instance.MarginX / 4;
+			int quarterMarginY = PageData.Instance.MarginY / 4;
+			SKPaint borderBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 2, Color = ConfigOptions.Instance.BorderLinesColor };
+			SKRectI borderSquare = new SKRectI(quarterMarginX, quarterMarginY, PageData.Instance.GetTotalWidth() - quarterMarginX, PageData.Instance.GetTotalHeight() - quarterMarginY);
+			drawingCanvas.DrawRect(borderSquare, borderBrush);
 
-            if (DrawGridLines)
-            {
-                for (int x = 0; x <= PageData.Instance.SquaresWide; x++)
-                {
-                    int xStart = (x * PageData.Instance.SquareSize) + PageData.Instance.MarginX;
-                    int yStart = PageData.Instance.MarginY;
-                    int yEnd = PageData.Instance.GetTotalHeight() - PageData.Instance.MarginY;
-                    drawingSurface.DrawLine(new SKPointI(xStart, yStart), new SKPointI(xStart, yEnd), gridBrush);
-                }
-                for (int y = 0; y <= PageData.Instance.SquaresTall; y++)
-                {
-                    int xStart = PageData.Instance.MarginX;
-                    int yStart = (y * PageData.Instance.SquareSize) + PageData.Instance.MarginY;
-                    int xEnd = PageData.Instance.GetTotalWidth() - PageData.Instance.MarginX;
-                    drawingSurface.DrawLine(new SKPointI(xStart, yStart), new SKPointI(xEnd, yStart), gridBrush);
-                }
-            }
+			if (DrawCenterLines)
+			{
+				using (SKPaint centerBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 2, Color = ConfigOptions.Instance.CenterLinesColor })
+				{
+					int halfX = PageData.Instance.GetTotalWidth() / 2;
+					int halfY = PageData.Instance.GetTotalHeight() / 2;
 
-            int quarterMarginX = PageData.Instance.MarginX / 4;
-            int quarterMarginY = PageData.Instance.MarginY / 4;
-            SKPaint borderBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 2, Color = ConfigOptions.Instance.BorderLinesColor };
-            SKRectI borderSquare = new SKRectI(quarterMarginX, quarterMarginY, PageData.Instance.GetTotalWidth() - quarterMarginX, PageData.Instance.GetTotalHeight() - quarterMarginY);
-            drawingSurface.DrawRect(borderSquare, borderBrush);
+					drawingCanvas.DrawLine(halfX, quarterMarginY, halfX, PageData.Instance.GetTotalHeight() - quarterMarginY, centerBrush);
+					drawingCanvas.DrawLine(quarterMarginX, halfY, PageData.Instance.GetTotalWidth() - quarterMarginX, halfY, centerBrush);
+				}
+			}
+			//Dispose of them.
+			if (_lastImage != null)
+			{
+				_lastImage.Dispose();
+			}
+			_lastImage = drawingSurface.Snapshot();
+			drawingSurface.Dispose();
+			gridBrush.Dispose();
+			borderBrush.Dispose();
 
-            if (DrawCenterLines)
-            {
-                using (SKPaint centerBrush = new SKPaint { Style = SKPaintStyle.Stroke, StrokeWidth = 2, Color = ConfigOptions.Instance.CenterLinesColor })
-                {
-                    int halfX = PageData.Instance.GetTotalWidth() / 2;
-                    int halfY = PageData.Instance.GetTotalHeight() / 2;
 
-                    drawingSurface.DrawLine(halfX, quarterMarginY, halfX, PageData.Instance.GetTotalHeight() - quarterMarginY, centerBrush);
-                    drawingSurface.DrawLine(quarterMarginX, halfY, PageData.Instance.GetTotalWidth() - quarterMarginX, halfY, centerBrush);
-                }
-            }
-            //Dispose of them.
-            drawingSurface.Dispose();
-            gridBrush.Dispose();
-            borderBrush.Dispose();
+			RedrawRequired = false;
+			return _lastImage;
+		}
 
-            if (LastImage != null)
-            {
-                LastImage.Dispose();
-            }
-            LastImage = image;
-            RedrawRequired = false;
-            return LastImage;
-        }
+		public SKPointI GetRenderPoint()
+		{
+			return new SKPointI(0, 0);
+		}
 
-        public bool IsRedrawRequired()
-        {
-            return RedrawRequired;
-        }
-
-        public void ForceRedraw()
-        {
-            RedrawRequired = true;
-        }
-
-        public SKPointI GetRenderPoint()
-        {
-            return new SKPointI(0, 0);
-        }
-    }
+		public bool IsRedrawRequired()
+		{
+			return RedrawRequired;
+		}
+	}
 }

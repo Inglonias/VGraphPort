@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using SkiaSharp;
 
 namespace VGraphPort.DataLayers
@@ -5,6 +6,7 @@ namespace VGraphPort.DataLayers
     public interface IDataLayer
     {
         bool DrawInExport { get; }
+        SKImage LastImage { get; }
 
         /// <summary>
         /// This method should be used to determine if a data layer should be redrawn or not.
@@ -15,16 +17,17 @@ namespace VGraphPort.DataLayers
         /// <returns>Returns true if the data layer should be redrawn, and false otherwise.</returns>
         bool IsRedrawRequired();
         /// <summary>
-        /// Draw the relevant data layer as an SKBitmap.
+        /// Draw the relevant data layer as a SKImage.
         /// </summary>
         /// <returns>An SKBitmap representing the current data layer.</returns>
-        SKBitmap GenerateLayerBitmap();
-        /// <summary>
-        /// Not every layer has to be the same size. This method exists to tell the rendering event where to start drawing this layer.
-        /// The background and line layers currently return (0, 0) here, but the cursor layer is a special case.
-        /// </summary>
-        /// <returns>World coordinates to render this layer at.</returns>
-        SKPointI GetRenderPoint();
+        SKImage GenerateLayerImage();
+
+		/// <summary>
+		/// Not every layer has to be the same size. This method exists to tell the rendering event where to start drawing this layer.
+		/// The background and line layers currently return (0, 0) here, but the cursor layer is a special case.
+		/// </summary>
+		/// <returns>World coordinates to render this layer at.</returns>
+		SKPointI GetRenderPoint();
         /// <summary>
         /// Force a layer to redraw at the next PaintSurface event.
         /// </summary>
