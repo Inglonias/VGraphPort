@@ -51,5 +51,18 @@ namespace VGraphPort.Views
 			lineLayer.SelectTool(tool);
 			textLayer.SelectTool(tool);
 		}
+
+		private void OddMode_OnClick(object sender, RoutedEventArgs e)
+		{
+			PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
+			previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
+		}
+
+		public void CheckEditButtonValidity()
+		{
+			LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
+			UndoButton.IsEnabled = PageHistory.Instance.CanUndo();
+			RedoButton.IsEnabled = PageHistory.Instance.CanRedo();
+		}
 	}
 }

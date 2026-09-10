@@ -22,10 +22,10 @@
 			<RowDefinition Height="24"/>
 		</Grid.RowDefinitions>
 		<DockPanel Grid.Row="0">
-			<local:MenuBarControl></local:MenuBarControl>
+			<local:MenuBarControl x:Name="MainMenuBar"></local:MenuBarControl>
 		</DockPanel>
 		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto">
-			<local:MainCanvas />
+			<local:MainCanvas x:Name="PrimaryDrawingPanel"/>
 		</ScrollViewer>
 	</Grid>
 

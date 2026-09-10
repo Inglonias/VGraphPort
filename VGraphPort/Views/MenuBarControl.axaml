@@ -76,7 +76,7 @@
             <ToggleButton x:Name="Text_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Texttool.png"></Image>
             </ToggleButton>
-            <CheckBox Content="Odd Mode" x:Name="OddModeCheckbox" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="32,0,0,0"/>
+            <CheckBox Content="Odd Mode" x:Name="OddModeCheckbox" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="32,0,0,0" Click="OddMode_OnClick"/>
             <Button Height="24" Margin="16,0" >
                 <Grid>
                     <Grid.ColumnDefinitions>
