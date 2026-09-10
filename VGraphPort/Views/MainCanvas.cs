@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using SkiaSharp;
 using System;
@@ -20,6 +21,9 @@ public class MainCanvas : Control
 	PreviewLayer LPreview = new PreviewLayer();
 	LayerDrawOperation DrawOp = new LayerDrawOperation();
 	private bool _redrawPending = true;
+	public event EventHandler? EyedropperUsed;
+	public event EventHandler? LineCreated;
+
 	public MainCanvas()
 	{
 		DrawOp.Layers.Add(LGrid);
@@ -72,7 +76,28 @@ public class MainCanvas : Control
 		var position = e.GetPosition(this);
 		LCursor.MoveCursor(position);
 		_redrawPending = true;
-
+	}
+	protected override void OnPointerPressed(PointerPressedEventArgs e)
+	{
+		base.OnPointerPressed(e);
+		if (e.Properties.IsRightButtonPressed)
+		{
+			SKPointI target = LCursor.RoundToNearestIntersection(e.GetPosition(this));
+			SKPointI targetGrid = LCursor.GetCursorGridPoints();
+			LText.HandleCreationClick(target, targetGrid);
+			LPreview.HandleCreationClick(target, targetGrid);
+			LineCreated?.Invoke(this, EventArgs.Empty);
+		}
+		else if (e.Properties.IsLeftButtonPressed)
+		{
+			bool maintainSelection = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+			bool selectionMade = LLines.HandleSelectionClick(e.GetPosition(this), maintainSelection) || LText.HandleSelectionClick(e.GetPosition(this), maintainSelection);
+			if (selectionMade && PageData.Instance.IsEyedropperActive)
+			{
+				EyedropperUsed.Invoke(this, EventArgs.Empty);
+			}
+		}
+		InvalidateVisual();
 	}
 	protected override Size MeasureOverride(Size availableSize)
 	{

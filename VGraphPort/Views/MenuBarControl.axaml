@@ -25,7 +25,6 @@
                     <MenuItem x:Name="ExportGridLines" Header="Export with Grid Lines" ToggleType="CheckBox" IsChecked="True"  />
                     <MenuItem x:Name="ExportBackgroundImage" Header="Export with Background Image" ToggleType="CheckBox" IsChecked="False" />
                 </MenuItem>
-
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
@@ -56,25 +55,25 @@
             <Separator/>
         </DockPanel>
         <DockPanel Height="44" Grid.Row="2" >
-            <ToggleButton x:Name="Line_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,1,1,1" IsChecked="True">
+            <ToggleButton x:Name="Line_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,1,1,1" IsChecked="True" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Line.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Box_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" >
+            <ToggleButton x:Name="Box_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Box.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Tri_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1">
+            <ToggleButton x:Name="Tri_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Triangle.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Circle_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" >
+            <ToggleButton x:Name="Circle_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Circle.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Boxy_Circle_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" >
+            <ToggleButton x:Name="Boxy_Circle_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Boxy Circle.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Ellipse_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" >
+            <ToggleButton x:Name="Ellipse_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Ellipse.png"></Image>
             </ToggleButton>
-            <ToggleButton x:Name="Text_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" >
+            <ToggleButton x:Name="Text_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1" Click="ToolMenu_OnChecked">
                 <Image Source="avares://VGraphPort/Assets/Texttool.png"></Image>
             </ToggleButton>
             <CheckBox Content="Odd Mode" x:Name="OddModeCheckbox" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="32,0,0,0"/>
