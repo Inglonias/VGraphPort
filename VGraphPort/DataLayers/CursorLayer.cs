@@ -79,34 +79,34 @@ namespace VGraphPort.DataLayers
             return new SKPointI(targetX, targetY);
         }
 
-		public void StartClickDrag()
-		{
-			if (!ClickDragActive)
-			{
-				ClickDragActive = true;
-				ClickDragPoint = CanvasPoint;
-			}
+        public void StartClickDrag()
+        {
+            if (!ClickDragActive)
+            {
+                ClickDragActive = true;
+                ClickDragPoint = CanvasPoint;
+            }
             ForceRedraw();
-		}
+        }
 
-		public SKRect StopClickDrag()
-		{
-			if (ClickDragActive)
-			{
-				ClickDragActive = false;
+        public SKRect StopClickDrag()
+        {
+            if (ClickDragActive)
+            {
+                ClickDragActive = false;
 
-				float left = Convert.ToSingle(Math.Min(CanvasPoint.X, ClickDragPoint.X));
-				float right = Convert.ToSingle(Math.Max(CanvasPoint.X, ClickDragPoint.X));
-				float top = Convert.ToSingle(Math.Min(CanvasPoint.Y, ClickDragPoint.Y));
-				float bottom = Convert.ToSingle(Math.Max(CanvasPoint.Y, ClickDragPoint.Y));
+                float left = Convert.ToSingle(Math.Min(CanvasPoint.X, ClickDragPoint.X));
+                float right = Convert.ToSingle(Math.Max(CanvasPoint.X, ClickDragPoint.X));
+                float top = Convert.ToSingle(Math.Min(CanvasPoint.Y, ClickDragPoint.Y));
+                float bottom = Convert.ToSingle(Math.Max(CanvasPoint.Y, ClickDragPoint.Y));
 
-				SKRect rVal = new SKRect(left, top, right, bottom);
-				return rVal;
-			}
-			return SKRect.Empty;
-		}
+                SKRect rVal = new SKRect(left, top, right, bottom);
+                return rVal;
+            }
+            return SKRect.Empty;
+        }
 
-		public bool IsRedrawRequired()
+        public bool IsRedrawRequired()
         {
             return _redrawRequired;
         }
