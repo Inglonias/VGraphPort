@@ -32,9 +32,10 @@ public class MainCanvas : Control
         DrawOp.Layers.Add(LCursor);
         DrawOp.Layers.Add(LPreview);
         AssignPageData();
+        double frameTime = 1000.0 / ConfigOptions.Instance.MaxFrameRate;
         DispatcherTimer timer = new()
         {
-            Interval = TimeSpan.FromMilliseconds(16.67) // 60 FPS
+            Interval = TimeSpan.FromMilliseconds(frameTime) //Configured framerate
         };
 
         timer.Tick += (_, _) =>
