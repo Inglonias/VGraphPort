@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using VGraphPort.ViewModels;
 using VGraphPort.Views;
 
 namespace VGraphPort;
