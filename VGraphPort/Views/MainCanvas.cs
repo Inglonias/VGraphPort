@@ -74,7 +74,21 @@ public class MainCanvas : Control
     {
         base.OnPointerMoved(e);
         var position = e.GetPosition(this);
-        LCursor.MoveCursor(position);
+		if (!e.Properties.IsLeftButtonPressed)
+		{
+			SKRect selectionBox = LCursor.StopClickDrag();
+			bool maintainSelection = e.KeyModifiers.HasFlag(KeyModifiers.Control);
+			if (!selectionBox.Equals(SKRect.Empty))
+			{
+				LLines.HandleBoxSelect(selectionBox, maintainSelection);
+				LText.HandleBoxSelect(selectionBox, maintainSelection);
+			}
+		}
+		else
+		{
+			LCursor.StartClickDrag();
+		}
+		LCursor.MoveCursor(position);
         _redrawPending = true;
     }
     protected override void OnPointerPressed(PointerPressedEventArgs e)

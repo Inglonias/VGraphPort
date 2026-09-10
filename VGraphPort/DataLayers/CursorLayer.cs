@@ -13,8 +13,7 @@ namespace VGraphPort.DataLayers
     {
         private bool _redrawRequired = true;
         public bool ClickDragActive { get; private set; } = false;
-        private Point _canvasPoint;
-        public Point CanvasPoint { get { return _canvasPoint; } set { _canvasPoint = value; /* TODO: Scaling awareness */ } }
+        public Point CanvasPoint { get; set; }
         private Point ClickDragPoint = new Point(0, 0);
         public SKPointI LastCursorPoint = new SKPointI(0, 0);
         public SKPointI CursorPoint { get; set; } = new SKPointI(0, 0);
@@ -38,6 +37,7 @@ namespace VGraphPort.DataLayers
         {
             LastCursorPoint = new SKPointI(CursorPoint.X, CursorPoint.Y);
             CursorPoint = RoundToNearestIntersection(p);
+            CanvasPoint = p;
             if (!LastCursorPoint.Equals(CursorPoint)) {
                 ForceRedraw();
             }
@@ -79,7 +79,34 @@ namespace VGraphPort.DataLayers
             return new SKPointI(targetX, targetY);
         }
 
-        public bool IsRedrawRequired()
+		public void StartClickDrag()
+		{
+			if (!ClickDragActive)
+			{
+				ClickDragActive = true;
+				ClickDragPoint = CanvasPoint;
+			}
+            ForceRedraw();
+		}
+
+		public SKRect StopClickDrag()
+		{
+			if (ClickDragActive)
+			{
+				ClickDragActive = false;
+
+				float left = Convert.ToSingle(Math.Min(CanvasPoint.X, ClickDragPoint.X));
+				float right = Convert.ToSingle(Math.Max(CanvasPoint.X, ClickDragPoint.X));
+				float top = Convert.ToSingle(Math.Min(CanvasPoint.Y, ClickDragPoint.Y));
+				float bottom = Convert.ToSingle(Math.Max(CanvasPoint.Y, ClickDragPoint.Y));
+
+				SKRect rVal = new SKRect(left, top, right, bottom);
+				return rVal;
+			}
+			return SKRect.Empty;
+		}
+
+		public bool IsRedrawRequired()
         {
             return _redrawRequired;
         }
@@ -112,7 +139,6 @@ namespace VGraphPort.DataLayers
 
             if (ClickDragActive)
             {
-                ForceRedraw();
                 canvasWidth = Math.Max(1, Convert.ToInt32(Math.Abs(ClickDragPoint.X - CanvasPoint.X)));
                 canvasHeight = Math.Max(1, Convert.ToInt32(Math.Abs(ClickDragPoint.Y - CanvasPoint.Y)));
             }
