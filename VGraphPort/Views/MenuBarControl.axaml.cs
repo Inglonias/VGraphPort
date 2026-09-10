@@ -17,52 +17,52 @@ namespace VGraphPort.Views
             InitializeComponent();
         }
 
-		private void ToolMenu_OnChecked(object sender, RoutedEventArgs e)
-		{
-			ToggleButton toolClicked = (ToggleButton)sender;
-			if (toolClicked.Name != null)
-			{
-				string targetTool = toolClicked.Name;
-				SelectTool(targetTool);
-			}
+        private void ToolMenu_OnChecked(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toolClicked = (ToggleButton)sender;
+            if (toolClicked.Name != null)
+            {
+                string targetTool = toolClicked.Name;
+                SelectTool(targetTool);
+            }
 
-			InvalidateVisual();
-		}
+            InvalidateVisual();
+        }
 
-		private void SelectTool(string tool)
-		{
-			List<ToggleButton> toolMenuItems =
-			[
-				Line_Tool,
-				Tri_Tool,
-				Box_Tool,
-				Circle_Tool,
-				Boxy_Circle_Tool,
-				Ellipse_Tool,
-				Text_Tool,
-			];
+        private void SelectTool(string tool)
+        {
+            List<ToggleButton> toolMenuItems =
+            [
+                Line_Tool,
+                Tri_Tool,
+                Box_Tool,
+                Circle_Tool,
+                Boxy_Circle_Tool,
+                Ellipse_Tool,
+                Text_Tool,
+            ];
 
-			foreach (ToggleButton m in toolMenuItems)
-			{
-				m.IsChecked = m.Name != null && m.Name.Equals(tool);
-			}
-			LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
-			TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
-			lineLayer.SelectTool(tool);
-			textLayer.SelectTool(tool);
-		}
+            foreach (ToggleButton m in toolMenuItems)
+            {
+                m.IsChecked = m.Name != null && m.Name.Equals(tool);
+            }
+            LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
+            TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
+            lineLayer.SelectTool(tool);
+            textLayer.SelectTool(tool);
+        }
 
-		private void OddMode_OnClick(object sender, RoutedEventArgs e)
-		{
-			PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
-			previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
-		}
+        private void OddMode_OnClick(object sender, RoutedEventArgs e)
+        {
+            PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
+            previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
+        }
 
-		public void CheckEditButtonValidity()
-		{
-			LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
-			UndoButton.IsEnabled = PageHistory.Instance.CanUndo();
-			RedoButton.IsEnabled = PageHistory.Instance.CanRedo();
-		}
-	}
+        public void CheckEditButtonValidity()
+        {
+            LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
+            UndoButton.IsEnabled = PageHistory.Instance.CanUndo();
+            RedoButton.IsEnabled = PageHistory.Instance.CanRedo();
+        }
+    }
 }
