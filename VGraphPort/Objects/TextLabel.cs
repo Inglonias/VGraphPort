@@ -76,16 +76,18 @@ namespace VGraphPort.Objects
             //drawingSurface.Clear(SKColors.Yellow);
             SKColor labelColor = TextLabel.DEFAULT_COLOR;
             SKColor.TryParse(LabelColor, out labelColor);
-            SKPaint textBrush = new SKPaint { Typeface = SKTypeface.FromFamilyName(FontFamily), TextSize = FontSize, Color = labelColor };
+            SKFont textFont = new SKFont { Typeface = SKTypeface.FromFamilyName(FontFamily), Size = FontSize };
+            SKPaint textBrush = new SKPaint { Color = labelColor };
             float[] intervals = { 5.0f, 5.0f };
             SKPathEffect dashPathEffect = SKPathEffect.CreateDash(intervals, 5.0f);
             SKPaint selectedBrush = new SKPaint { Style = SKPaintStyle.Stroke,PathEffect = dashPathEffect, StrokeWidth = 5.0f, Color = ConfigOptions.Instance.LineHighlightColor, IsAntialias = true };
-            drawingSurface.DrawText(LabelText, 0, GetLabelRect().Height, textBrush);
+            drawingSurface.DrawText(LabelText, 0, GetLabelRect().Height, SKTextAlign.Left, textFont, textBrush);
             if (IsSelected)
             {
                 SKRectI selectedRect = new SKRectI(0, 0, image.Width, image.Height);
                 drawingSurface.DrawRect(selectedRect, selectedBrush);
             }
+            textFont.Dispose();
             textBrush.Dispose();
             selectedBrush.Dispose();
             return image;
@@ -123,9 +125,9 @@ namespace VGraphPort.Objects
         {
             SKColor labelColor = TextLabel.DEFAULT_COLOR;
             SKColor.TryParse(LabelColor, out labelColor);
-            SKPaint textBrush = new SKPaint { Typeface = SKTypeface.FromFamilyName(FontFamily), TextSize = FontSize, Color = labelColor };
-            SKRect textBounds = new SKRect();
-            textBrush.MeasureText(LabelText, ref textBounds);
+            SKFont textFont = new SKFont { Typeface = SKTypeface.FromFamilyName(FontFamily), Size = FontSize };
+            SKPaint textBrush = new SKPaint { Color = labelColor }; SKRect textBounds = new SKRect();
+            textFont.MeasureText(LabelText, textBrush);
 
             textBrush.Dispose();
 

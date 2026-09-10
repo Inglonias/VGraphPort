@@ -94,7 +94,7 @@ public class MainCanvas : Control
             bool selectionMade = LLines.HandleSelectionClick(e.GetPosition(this), maintainSelection) || LText.HandleSelectionClick(e.GetPosition(this), maintainSelection);
             if (selectionMade && PageData.Instance.IsEyedropperActive)
             {
-                EyedropperUsed.Invoke(this, EventArgs.Empty);
+                EyedropperUsed?.Invoke(this, EventArgs.Empty);
             }
         }
         InvalidateVisual();
