@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="New" Command="{Binding CreateNewGridCommand}"/>
+                <MenuItem Header="New" Click="NewGridButton_OnClick"/>
                 <MenuItem Header="Open"/>
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save As"/>
@@ -34,7 +34,7 @@
                 <MenuItem x:Name="UndoButton" Header="Undo"/>
                 <MenuItem x:Name="RedoButton" Header="Redo"/>
                 <Separator />
-                <MenuItem x:Name="ResizeButton" Header="Resize Canvas" />
+                <MenuItem x:Name="ResizeButton" Header="Resize Canvas" Click="ResizeButton_OnClick"/>
                 <Separator />
                 <MenuItem Header="Select All"/>
             </MenuItem>

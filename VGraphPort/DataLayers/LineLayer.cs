@@ -76,8 +76,12 @@ namespace VGraphPort.DataLayers
         /// Adds all lines contained in the provided array of line segments to the canvas.
         /// </summary>
         /// <param name="l">The array of line segments to add to the canvas</param>
-        public void AddNewLines(LineSegment[] l)
+        public void AddNewLines(LineSegment[]? l)
         {
+            if (l is null || l.Length == 0)
+            {
+                return;
+            }
             foreach (LineSegment line in l)
             {
                 if (line.LineColor == null)

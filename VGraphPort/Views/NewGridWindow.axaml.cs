@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -9,20 +10,10 @@ namespace VGraphPort.Views;
 public partial class NewGridWindow : Window
 {
 
+    public event EventHandler? NewGridWindowComplete;
     public NewGridWindow()
     {
         InitializeComponent();
-        this.DataContextChanged += (_, _) =>
-        {
-            if (DataContext is NewGridWindowModel vm)
-            {
-                vm.NewGridOkPressed += (_, _) =>
-                {
-                    PageData.Instance.UnlockMainWindow();
-                    Close();
-                };
-            }
-        };
         PageData.Instance.LockMainWindow();
         InvalidateVisual();
     }
@@ -30,6 +21,17 @@ public partial class NewGridWindow : Window
     private void NewGridWindow_OnCancel(object sender, RoutedEventArgs e)
     {
         PageData.Instance.UnlockMainWindow();
+        Close();
+    }
+
+    private void NewGridWindow_OnOk(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is NewGridWindowModel vm)
+        {
+            vm.FinishGridSetup();
+        }
+        PageData.Instance.UnlockMainWindow();
+        NewGridWindowComplete?.Invoke(this, EventArgs.Empty);
         Close();
     }
 

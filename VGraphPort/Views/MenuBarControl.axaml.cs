@@ -13,11 +13,13 @@ using MsBox.Avalonia.Enums;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
 using VGraphPort.Objects;
+using VGraphPort.ViewModels;
 
 namespace VGraphPort.Views
 {
     public partial class MenuBarControl : UserControl
     {
+        public required MainWindow ParentWindow { get; set; }
         //Commands
         public MenuBarControl()
         {
@@ -66,5 +68,29 @@ namespace VGraphPort.Views
         }
 
 
+        private void NewGridButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            OpenNewGridWindow(true);
+        }
+
+        private void OpenNewGridWindow(bool deleteLines)
+        {
+            NewGridWindow ngw = new NewGridWindow();
+            var ngwm = new NewGridWindowModel
+            {
+                DeleteLines = deleteLines
+            };
+            ngw.DataContext = ngwm;
+            ngw.NewGridWindowComplete += (_, _) =>
+            {
+                ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+            };
+            ngw.Show();
+        }
+
+        private void ResizeButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            OpenNewGridWindow(false);
+        }
     }
 }

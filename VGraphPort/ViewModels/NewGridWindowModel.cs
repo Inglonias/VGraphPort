@@ -42,7 +42,7 @@ public partial class NewGridWindowModel : ViewModelBase
         CalculateImageInfo();
     }
 
-    private void FinishGridSetup()
+    public void FinishGridSetup()
     {
         try
         {

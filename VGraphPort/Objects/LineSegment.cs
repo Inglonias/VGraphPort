@@ -16,7 +16,7 @@ namespace VGraphPort.Objects
 
         public SKPointI StartPointGrid { get; set; }
         public SKPointI EndPointGrid { get; set; }
-        public string LineColor { get; set; } //Stored as #AARRGGBB due to serialization issues with SKColor
+        public string? LineColor { get; set; } //Stored as #AARRGGBB due to serialization issues with SKColor
         [JsonIgnore]
         public bool IsSelected { get; set; } = false;
 
@@ -107,7 +107,7 @@ namespace VGraphPort.Objects
         /// <summary>
         /// Determines whether "clickPoint" was intended to select a line.
         /// </summary>
-        /// <param name=""></param>
+
         /// <returns></returns>
         public bool WasLineSelected(double dist, Point clickPoint)
         {
@@ -131,7 +131,6 @@ namespace VGraphPort.Objects
         /// <summary>
         /// 
         /// </summary>
-        /// <param name=""></param>
         /// <returns></returns>
         public bool WasLineSelected(SKRect boundingBox)
         {
@@ -148,7 +147,7 @@ namespace VGraphPort.Objects
         {
             SKPointI endpointA;
             SKPointI endpointB;
-            if (!LineColor.Equals(target.LineColor)) {
+            if (LineColor is not null && !LineColor.Equals(target.LineColor)) {
                 return null;
             }
             if (this.StartPointGrid == target.StartPointGrid)
@@ -192,7 +191,7 @@ namespace VGraphPort.Objects
             }
             if ((double.IsInfinity(slopeA) && double.IsInfinity(slopeB)) || (Math.Abs(slopeA - slopeB) < Tolerance))
             {
-                return new LineSegment(endpointA, endpointB, LineColor);
+                return new LineSegment(endpointA, endpointB, LineColor ?? ConfigOptions.Instance.DefaultLineColorString);
             }
 
             return null;
@@ -233,7 +232,7 @@ namespace VGraphPort.Objects
                 mirrorEnd.Y = startDistance + yCrease.Value;
             }
 
-            return new LineSegment(mirrorStart, mirrorEnd, LineColor);
+            return new LineSegment(mirrorStart, mirrorEnd, LineColor ?? ConfigOptions.Instance.DefaultLineColorString);
         }
 
         //public SKColor GetInvertedLineColor()
