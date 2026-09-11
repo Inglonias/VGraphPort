@@ -1,9 +1,15 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
 using VGraphPort.Objects;
@@ -12,11 +18,13 @@ namespace VGraphPort.Views
 {
     public partial class MenuBarControl : UserControl
     {
+        //Commands
+        public event EventHandler? NewGridOkPressed;
         public MenuBarControl()
         {
             InitializeComponent();
         }
-
+        
         private void ToolMenu_OnChecked(object sender, RoutedEventArgs e)
         {
             ToggleButton toolClicked = (ToggleButton)sender;
@@ -29,6 +37,35 @@ namespace VGraphPort.Views
             InvalidateVisual();
         }
 
+        private async Task<bool> CheckUnsavedChanges()
+        {
+            if (PageData.Instance.IsCanvasDirty)
+            {
+                var box = MessageBoxManager.GetMessageBoxStandard("Warning - Unsaved changes",
+                    "You have unsaved changes. Are you sure you want to continue?", ButtonEnum.YesNo);
+                var result = await box.ShowAsync();
+                return result.HasFlag(ButtonResult.Yes);
+            }
+            return false;
+        }
+        
+        public async void CreateNewGrid(bool deleteLines)
+        {
+            if (deleteLines)
+            {
+                if (await CheckUnsavedChanges())
+                {
+                    return;
+                }
+            }
+            NewGridWindow ngw = new NewGridWindow
+            {
+                DeleteLines = deleteLines
+            };
+            ngw.OkPressed += (_, _) => NewGridOkPressed?.Invoke(this, EventArgs.Empty);
+            ngw.Show();
+        }
+        
         private void SelectTool(string tool)
         {
             List<ToggleButton> toolMenuItems =

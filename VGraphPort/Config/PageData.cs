@@ -114,7 +114,6 @@ namespace VGraphPort.Config
                     MainWindow.IsHitTestVisible = true;
                     MainWindow.IsEnabled = true;
                 });
-                MainWindow.InvalidateVisual();
             }
         }
 
@@ -147,11 +146,15 @@ namespace VGraphPort.Config
         /// <returns>True if the file is valid and no errors occurred. False otherwise.</returns>
         public bool FileOpen(string fileName)
         {
-            VgpFile saveFile;
             try
             {
+                
                 string jsonString = File.ReadAllText(fileName);
-                saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                VgpFile? saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                if (saveFile is null)
+                {
+                    throw new FileNotFoundException("File " + fileName + " not found");
+                }
                 SquaresWide = saveFile.SquaresWide;
                 SquaresTall = saveFile.SquaresTall;
                 SquareSize = saveFile.SquareSize;
@@ -167,7 +170,7 @@ namespace VGraphPort.Config
                 lineLayer.AddNewLines(saveFile.Lines.ToArray());
                 textLayer.ClearAllLabels();
                 //Text label was added later, so this may be null.
-                if (saveFile.Labels != null)
+                if (saveFile.Labels.Count > 0)
                 {
                     textLayer.AddNewLabels(saveFile.Labels.ToArray());
                 }
@@ -194,11 +197,14 @@ namespace VGraphPort.Config
         /// <returns>True if the file is valid and no errors occurred. False otherwise.</returns>
         public bool FileImport(string fileName)
         {
-            VgpFile saveFile;
             try
             {
                 string jsonString = File.ReadAllText(fileName);
-                saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                VgpFile? saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                if (saveFile is null)
+                {
+                    throw new FileNotFoundException("File " + fileName + " not found");
+                }
                 SquaresWide = Math.Max(this.SquaresWide, saveFile.SquaresWide);
                 SquaresTall = Math.Max(this.SquaresTall, saveFile.SquaresTall);
         
@@ -209,7 +215,7 @@ namespace VGraphPort.Config
                 lineLayer.AddNewLines(saveFile.Lines.ToArray());
         
                 //Text label was added later, so this may be null.
-                if (saveFile.Labels != null)
+                if (saveFile.Labels.Count > 0)
                 {
                     textLayer.AddNewLabels(saveFile.Labels.ToArray());
                 }

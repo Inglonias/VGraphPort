@@ -19,5 +19,9 @@ public partial class MainWindow : Window
             MainMenuBar.InvalidateVisual();
             //MainMenuBar.ColorSwatch.InvalidateVisual();
         };
+        MainMenuBar.NewGridOkPressed += (_, _) =>
+        {
+            PrimaryDrawingPanel.InvalidateVisual();
+        };
     }
 }
