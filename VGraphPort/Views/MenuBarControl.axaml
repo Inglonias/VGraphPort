@@ -1,9 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VGraphPort.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="VGraphPort.Views.MenuBarControl">
+             x:Class="VGraphPort.Views.MenuBarControl"
+             x:DataType="vm:MenuBarModel">
   <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -12,7 +14,7 @@
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="New" />
+                <MenuItem Header="New"/>
                 <MenuItem Header="Open"/>
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save As"/>

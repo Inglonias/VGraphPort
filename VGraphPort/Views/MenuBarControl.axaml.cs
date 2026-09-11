@@ -36,35 +36,6 @@ namespace VGraphPort.Views
 
             InvalidateVisual();
         }
-
-        private async Task<bool> CheckUnsavedChanges()
-        {
-            if (PageData.Instance.IsCanvasDirty)
-            {
-                var box = MessageBoxManager.GetMessageBoxStandard("Warning - Unsaved changes",
-                    "You have unsaved changes. Are you sure you want to continue?", ButtonEnum.YesNo);
-                var result = await box.ShowAsync();
-                return result.HasFlag(ButtonResult.Yes);
-            }
-            return false;
-        }
-        
-        public async void CreateNewGrid(bool deleteLines)
-        {
-            if (deleteLines)
-            {
-                if (await CheckUnsavedChanges())
-                {
-                    return;
-                }
-            }
-            NewGridWindow ngw = new NewGridWindow
-            {
-                DeleteLines = deleteLines
-            };
-            ngw.OkPressed += (_, _) => NewGridOkPressed?.Invoke(this, EventArgs.Empty);
-            ngw.Show();
-        }
         
         private void SelectTool(string tool)
         {
@@ -95,11 +66,6 @@ namespace VGraphPort.Views
             previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
         }
 
-        public void CheckEditButtonValidity()
-        {
-            LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
-            UndoButton.IsEnabled = PageHistory.Instance.CanUndo();
-            RedoButton.IsEnabled = PageHistory.Instance.CanRedo();
-        }
+
     }
 }
