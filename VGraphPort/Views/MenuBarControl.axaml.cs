@@ -19,7 +19,6 @@ namespace VGraphPort.Views
     public partial class MenuBarControl : UserControl
     {
         //Commands
-        public event EventHandler? NewGridOkPressed;
         public MenuBarControl()
         {
             InitializeComponent();

@@ -1,15 +1,20 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="using:VGraphPort.Views"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:VGraphPort.ViewModels"
         x:Class="VGraphPort.Views.NewGridWindow"
+        x:DataType="vm:NewGridWindowModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="VGraphPort"
+        Title="{Binding WindowTitle}"
         Height="370"
         Width="350"
         CanResize="False"
         ShowInTaskbar="False">
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:NewGridWindowModel />
+    </Design.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -30,9 +35,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Content="Grid Size:" FontSize="14"/>
-            <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="x"          FontSize="14"/>
-            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquaresWide" FontSize="14" TextChanged="GridDimensionBox_OnTextChanged" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquaresTall" FontSize="14" TextChanged="GridDimensionBox_OnTextChanged" VerticalAlignment="Center"/>
+            <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="x" FontSize="14"/>
+            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquaresWide" Text="{Binding GridSquaresWide, Mode=TwoWay}" FontSize="14" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquaresTall" Text="{Binding GridSquaresTall, Mode=TwoWay}" FontSize="14" VerticalAlignment="Center"/>
         </Grid>
         <Grid Name="SquareSizeContainer" Grid.Row="1" Margin="4,2" Height="40">
             <Grid.ColumnDefinitions>
@@ -43,7 +48,7 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Content="Square Size (px):" FontSize="14"/>
-            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquareSize" FontSize="14" TextChanged="GridDimensionBox_OnTextChanged" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="GridSquareSize" Text="{Binding GridSquareSize, Mode=TwoWay}" FontSize="14" VerticalAlignment="Center"/>
         </Grid>
         <Grid Name="PageMarginContainer" Grid.Row="2" Margin="4,2" Height="40">
             <Grid.ColumnDefinitions>
@@ -54,9 +59,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Content="Margin (px):" FontSize="14"/>
-            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="PageMarginX" FontSize="14" TextChanged="GridDimensionBox_OnTextChanged" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="PageMarginX" Text="{Binding PageMarginX, Mode=TwoWay}" FontSize="14" VerticalAlignment="Center"/>
             <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="W" FontSize="14"/>
-            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="PageMarginY" FontSize="14" TextChanged="GridDimensionBox_OnTextChanged" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="PageMarginY" Text="{Binding PageMarginY, Mode=TwoWay}" FontSize="14" VerticalAlignment="Center"/>
             <Label Grid.Column="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="H" FontSize="14"/>
         </Grid>
         <Grid Grid.Row="3" Margin="4,2">
@@ -70,8 +75,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Background image:" FontSize="14"/>
-            <Button Content="Browse..." Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Center" Click="BackgroundImageBrowse_OnClick" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="1" x:Name="ImagePathBox" TextWrapping="NoWrap"  Text="" Grid.ColumnSpan="3" VerticalAlignment="Center" LostFocus="ImagePathBox_OnLostFocus"/>
+            <Button Content="Browse..." Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" Click="BackgroundImageBrowse_OnClick" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ImagePathBox" TextWrapping="NoWrap" Text="{Binding ImagePath, Mode=TwoWay}" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="4" Margin="4,2">
             <Grid>
@@ -81,13 +86,13 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Background Opacity:" FontSize="14"/>
-                <Slider HorizontalAlignment="Stretch" x:Name="BackgroundOpacitySlider" Grid.Column="1" VerticalAlignment="Center" Maximum="255" SmallChange="1" Value="128" ValueChanged="BackgroundOpacitySlider_OnValueChanged" Minimum="1" IsSnapToTickEnabled="True"/>
-                <TextBox Grid.Column="2" x:Name="BackgroundOpacityTextBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="128" VerticalAlignment="Center" Width="30" IsEnabled="False" FontSize="14"/>
+                <Slider HorizontalAlignment="Stretch" x:Name="BackgroundOpacitySlider" Grid.Column="1" VerticalAlignment="Center" Maximum="255" SmallChange="1" Value="{Binding BackgroundImageOpacitySliderValue, Mode=TwoWay}"  Minimum="1" IsSnapToTickEnabled="True"/>
+                <TextBox Grid.Column="2" x:Name="BackgroundOpacityTextBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding BackgroundImageOpacitySliderValue}" VerticalAlignment="Center" Width="30" IsEnabled="False" FontSize="14"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="5">
             <Border BorderThickness="1" Margin="4,0">
-                <TextBlock x:Name="ImageInfoTextBlock" Margin="2" Text="Canvas size ----- (px) : 123456 x 123456&#x0a;Grid size ------- (px) : 123456 x 123456&#x0a;Background size - (px) : 123456 x 123456" FontFamily="Courier New" Background="White"/>
+                <TextBlock x:Name="ImageInfoTextBlock" Margin="2" Text="{Binding ImageInfoTextBlock}" FontFamily="Courier New" Background="White"/>
             </Border>
         </Grid>
         <Grid Name="ButtonContainer" Grid.Row="6">
@@ -95,7 +100,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="12" IsDefault="True" Click="NewGridWindow_OnOK">OK</Button>
+            <Button Grid.Column="0" Margin="12" IsDefault="True">OK</Button>
             <Button Grid.Column="1" Margin="12" IsCancel="True" Click="NewGridWindow_OnCancel">Cancel</Button>
         </Grid>
     </Grid>

@@ -1,34 +1,60 @@
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using VGraphPort.Config;
-using VGraphPort.DataLayers;
 using VGraphPort.Objects;
 using VGraphPort.Views;
 
 namespace VGraphPort.ViewModels;
 
-public class MenuBarModel : ViewModelBase
+public partial class MenuBarModel : ViewModelBase
 {
-    public async void CreateNewGrid(bool deleteLines)
+    [ObservableProperty] public partial bool UndoEnabled { get; set; } = false;
+    [ObservableProperty] public partial bool RedoEnabled { get; set; } = false;
+
+    //Commands
+    public ICommand CreateNewGridCommand { get; }
+    public ICommand EditExistingGridCommand { get; }
+    
+
+    public MenuBarModel()
     {
-        if (deleteLines)
+        CreateNewGridCommand = new RelayCommand(CreateNewGrid);
+        EditExistingGridCommand = new RelayCommand(EditExistingGrid);
+    }
+    
+    private async void CreateNewGrid()
+    {
+        if (!await CheckUnsavedChanges())
         {
-            if (await CheckUnsavedChanges())
-            {
-                return;
-            }
+            return;
         }
-        NewGridWindow ngw = new NewGridWindow
+
+        ShowNewGridWindow(true);
+    }
+
+    private void EditExistingGrid()
+    {
+        ShowNewGridWindow(false);
+
+    }
+    
+    private void ShowNewGridWindow(bool deleteLines)
+    {
+        NewGridWindow ngw = new NewGridWindow();
+        var ngwm = new NewGridWindowModel
         {
             DeleteLines = deleteLines
         };
-        ngw.OkPressed += (_, _) => NewGridOkPressed?.Invoke(this, EventArgs.Empty);
+        ngw.DataContext = ngwm;
         ngw.Show();
     }
     
+    //Returns true if there are no unsaved changes, and/or the user wants to continue. False otherwise.
     private async Task<bool> CheckUnsavedChanges()
     {
         if (PageData.Instance.IsCanvasDirty)
@@ -38,13 +64,12 @@ public class MenuBarModel : ViewModelBase
             var result = await box.ShowAsync();
             return result.HasFlag(ButtonResult.Yes);
         }
-        return false;
+        return true;
     }
     
     public void CheckEditButtonValidity()
     {
-        LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
-        UndoButton.IsEnabled = PageHistory.Instance.CanUndo();
-        RedoButton.IsEnabled = PageHistory.Instance.CanRedo();
+        UndoEnabled = PageHistory.Instance.CanUndo();
+        RedoEnabled = PageHistory.Instance.CanRedo();
     }
 }

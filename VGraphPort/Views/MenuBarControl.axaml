@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="New"/>
+                <MenuItem Header="New" Command="{Binding CreateNewGridCommand}"/>
                 <MenuItem Header="Open"/>
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save As"/>
