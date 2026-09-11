@@ -12,6 +12,17 @@ public partial class NewGridWindow : Window
     public NewGridWindow()
     {
         InitializeComponent();
+        this.DataContextChanged += (_, _) =>
+        {
+            if (DataContext is NewGridWindowModel vm)
+            {
+                vm.NewGridOkPressed += (_, _) =>
+                {
+                    PageData.Instance.UnlockMainWindow();
+                    Close();
+                };
+            }
+        };
         PageData.Instance.LockMainWindow();
         InvalidateVisual();
     }

@@ -1,9 +1,11 @@
 using System;
 using System.IO;
+using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SkiaSharp;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
@@ -25,10 +27,13 @@ public partial class NewGridWindowModel : ViewModelBase
     [ObservableProperty] public partial int BackgroundImageOpacitySliderValue { get; set; }
     
     public event EventHandler? NewGridOkPressed;
+    public ICommand PressOkCommand { get; }
 
 
     public NewGridWindowModel()
     {
+        PressOkCommand = new RelayCommand(FinishGridSetup);
+        
         WindowTitle = DeleteLines ? "Create New Grid" : "Resize Grid";
         GridSquaresWide = Convert.ToString(PageData.Instance.SquaresWide);
         GridSquaresTall = Convert.ToString(PageData.Instance.SquaresTall);
