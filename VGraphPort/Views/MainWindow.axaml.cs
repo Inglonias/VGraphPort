@@ -10,5 +10,15 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         MainMenuBar.DataContext = new MenuBarModel();
+        this.DataContextChanged += (_, _) =>
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.UpdateMainCanvasVisual += (_, _) =>
+                {
+                    PrimaryDrawingPanel.InvalidateVisual();
+                };
+            }
+        };
     }
 }

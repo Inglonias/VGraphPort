@@ -13,7 +13,7 @@ public partial class NewGridWindowModel : ViewModelBase
 {
     public required bool DeleteLines { get; set; }
     [ObservableProperty] public partial string WindowTitle { get; set; }
-    [ObservableProperty] public partial string ImageInfoTextBlock { get; private set; }
+    [ObservableProperty] public partial string? ImageInfoTextBlock { get; private set; }
     [ObservableProperty] public partial string ImagePath { get; set; }
     [ObservableProperty] public partial string GridSquaresWide { get; set; }
     [ObservableProperty] public partial string GridSquaresTall { get; set; }
@@ -52,7 +52,7 @@ public partial class NewGridWindowModel : ViewModelBase
             PageData.Instance.TrueSquareSize = Math.Min(128, Math.Max(4, Convert.ToInt32(GridSquareSize)));
             PageData.Instance.MarginX = Math.Max(0, Convert.ToInt32(PageMarginX));
             PageData.Instance.MarginY = Math.Max(0, Convert.ToInt32(PageMarginY));
-            string path = ImagePath ?? "";
+            string path = ImagePath;
             PageData.Instance.SetBackgroundImage(path);
             PageData.Instance.BackgroundImageAlpha = Convert.ToByte(BackgroundImageOpacitySliderValue);
             GridBackgroundLayer gridBackgroundLayer =

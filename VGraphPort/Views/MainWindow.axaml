@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="VGraphPort.Views.MainWindow"
-        x:DataType="vm:NewGridWindowModel"
+        x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="VGraphPort">
         
@@ -14,9 +14,15 @@
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:NewGridWindowModel />
+        <vm:MainViewModel />
     </Design.DataContext>
-    
+    <Window.KeyBindings>
+        <KeyBinding Gesture="W" Command="{Binding MoveThingsUpCommand}"/>
+        <KeyBinding Gesture="A" Command="{Binding MoveThingsLeftCommand}"/>
+        <KeyBinding Gesture="S" Command="{Binding MoveThingsDownCommand}"/>
+        <KeyBinding Gesture="D" Command="{Binding MoveThingsRightCommand}"/>
+        <KeyBinding Gesture="Delete" Command="{Binding DeleteThingsCommand}"/>
+    </Window.KeyBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="64"/>
