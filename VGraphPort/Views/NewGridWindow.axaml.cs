@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using SkiaSharp;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
@@ -13,6 +15,7 @@ namespace VGraphPort.Views;
 public partial class NewGridWindow : Window
 {
     public required bool DeleteLines { get; set; }
+    public event EventHandler? OkPressed;
 
     public NewGridWindow()
     {
@@ -129,7 +132,7 @@ public partial class NewGridWindow : Window
             }
 
             lineLayer.ForceRedraw();
-            //MainWindowParent.MainCanvas.InvalidateVisual();
+            OkPressed?.Invoke(this, EventArgs.Empty);
             PageData.Instance.UnlockMainWindow();
             Close();
         }
@@ -149,20 +152,15 @@ public partial class NewGridWindow : Window
         CalculateImageInfo();
     }
 
-    private void BackgroundImageBrowse_OnClick(object sender, RoutedEventArgs e)
+    private async void BackgroundImageBrowse_OnClick(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog d = new OpenFileDialog
+        var topLevel = TopLevel.GetTopLevel(this);
+        var file = await topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            DefaultExt = ".vgp",
-            Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*"
-        };
-        bool? result = d.ShowDialog();
-
-        if (result == true)
-        {
-            ImagePathBox.Text = d.FileName;
-            CalculateImageInfo();
-        }
+            Title = "Open Background Image",
+            AllowMultiple = false,
+            FileTypeFilter = [FilePickerFileTypes.ImageAll]
+        });
     }
 
     private void ImagePathBox_OnLostFocus(object sender, RoutedEventArgs e)
