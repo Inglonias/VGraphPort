@@ -1,10 +1,8 @@
 using System;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
-using VGraphPort.Views;
 
 namespace VGraphPort.ViewModels;
 

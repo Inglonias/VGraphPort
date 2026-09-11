@@ -1,18 +1,9 @@
-using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
-using VGraphPort.Objects;
 using VGraphPort.ViewModels;
 
 namespace VGraphPort.Views
@@ -73,6 +64,36 @@ namespace VGraphPort.Views
             OpenNewGridWindow(true);
         }
 
+        private void ResizeButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            OpenNewGridWindow(false);
+        }
+
+        private void OpenButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+        
+        private void SaveAsButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+        
+        private void ImportButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+        
+        private void ExportButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+        
         private void OpenNewGridWindow(bool deleteLines)
         {
             NewGridWindow ngw = new NewGridWindow();
@@ -86,11 +107,6 @@ namespace VGraphPort.Views
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
             };
             ngw.Show();
-        }
-
-        private void ResizeButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            OpenNewGridWindow(false);
         }
     }
 }

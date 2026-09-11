@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using VGraphPort.Config;
 using VGraphPort.ViewModels;
 
 namespace VGraphPort.Views;

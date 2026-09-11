@@ -15,12 +15,12 @@
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
                 <MenuItem Header="New" Click="NewGridButton_OnClick"/>
-                <MenuItem Header="Open"/>
-                <MenuItem Header="Save"/>
-                <MenuItem Header="Save As"/>
+                <MenuItem Header="Open" Click="OpenButton_OnClick"/>
+                <MenuItem Header="Save" Click="SaveButton_OnClick"/>
+                <MenuItem Header="Save As" Click="SaveAsButton_OnClick"/>
                 <Separator />
-                <MenuItem Header="Import"/>
-                <MenuItem Header="Export"/>
+                <MenuItem Header="Import" Click="ImportButton_OnClick"/>
+                <MenuItem Header="Export" Click="ExportButton_OnClick"/>
                 <Separator />
                 <MenuItem Header="Export Settings">
                     <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" ToggleType="CheckBox" IsChecked="False"/>
