@@ -110,7 +110,7 @@ namespace VGraphPort.Views
             });
             if (file is not null)
             {
-                PageData.Instance.FileOpen(file.Path.ToString().Substring(7)); //Remove the preceding "file//")
+                PageData.Instance.FileOpen(file.Path.ToString()[7..]); //Remove the preceding "file//")
             }
         }
         
@@ -125,15 +125,25 @@ namespace VGraphPort.Views
             });
             if (file.Count > 0)
             {
-                PageData.Instance.FileOpen(file[0].Path.ToString().Substring(7)); //Remove the preceding "file//")
+                PageData.Instance.FileOpen(file[0].Path.ToString()[7..]); //Remove the preceding "file//")
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             }
         }
         
-        private void ExportButton_OnClick(object? sender, RoutedEventArgs e)
+        private async void ExportButton_OnClick(object? sender, RoutedEventArgs e)
         {
-            
+            var topLevel = TopLevel.GetTopLevel(this);
+            var file = await topLevel!.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save Image",
+                DefaultExtension = ".png",
+                SuggestedFileType = FilePickerFileTypes.ImagePng
+            });
+            if (file is not null)
+            {
+                PageData.Instance.FileExport(file.Path.ToString()[7..]); //Remove the preceding "file//")
+            }
         }
         
         private void OpenNewGridWindow(bool deleteLines)
