@@ -40,13 +40,13 @@ namespace VGraphPort.Views
         {
             List<ToggleButton> toolMenuItems =
             [
-                Line_Tool,
-                Tri_Tool,
-                Box_Tool,
-                Circle_Tool,
-                Boxy_Circle_Tool,
-                Ellipse_Tool,
-                Text_Tool,
+                LineTool,
+                TriTool,
+                BoxTool,
+                CircleTool,
+                BoxyCircleTool,
+                EllipseTool,
+                TextTool,
             ];
 
             foreach (ToggleButton m in toolMenuItems)

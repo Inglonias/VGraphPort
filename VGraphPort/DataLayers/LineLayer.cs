@@ -15,12 +15,12 @@ namespace VGraphPort.DataLayers
     {
         public static Dictionary<string, IDrawTool> Tools = new Dictionary<string, IDrawTool>();
 
-        public const string LINE_TOOL = "Line_Tool";
-        public const string BOX_TOOL = "Box_Tool";
-        public const string TRI_TOOL = "Tri_Tool";
-        public const string CIRCLE_TOOL = "Circle_Tool";
-        public const string BOXY_CIRCLE_TOOL = "Boxy_Circle_Tool";
-        public const string ELLIPSE_TOOL = "Ellipse_Tool";
+        public const string LineTool = "LineTool";
+        public const string BoxTool = "BoxTool";
+        public const string TriTool = "Tri_ool";
+        public const string CircleTool = "CircleTool";
+        public const string BoxyCircleTool = "BoxyCircleTool";
+        public const string EllipseTool = "EllipseTool";
 
         public List<LineSegment> LineList { get; set; } = new List<LineSegment>();
         private bool _redrawRequired;
@@ -35,22 +35,22 @@ namespace VGraphPort.DataLayers
         public LineLayer()
         {
             LineLayer.InitializeTools();
-            SelectedTool = Tools[LINE_TOOL];
+            SelectedTool = Tools[LineTool];
         }
 
         public static void InitializeTools()
         {
-            Tools[LINE_TOOL] = new LineTool();
-            Tools[BOX_TOOL] = new BoxTool();
-            Tools[TRI_TOOL] = new TriangleTool();
-            Tools[CIRCLE_TOOL] = new CircleTool();
-            Tools[BOXY_CIRCLE_TOOL] = new BoxyCircleTool(0.5);
-            Tools[ELLIPSE_TOOL] = new EllipseTool();
+            Tools[LineTool] = new LineTool();
+            Tools[BoxTool] = new BoxTool();
+            Tools[TriTool] = new TriangleTool();
+            Tools[CircleTool] = new CircleTool();
+            Tools[BoxyCircleTool] = new BoxyCircleTool(0.5);
+            Tools[EllipseTool] = new EllipseTool();
         }
 
         public void SelectTool(string tool)
         {
-            if (tool.Equals("Text_Tool"))
+            if (tool.Equals("TextTool"))
             {
                 SelectedTool = null;
                 return;

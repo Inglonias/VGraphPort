@@ -83,7 +83,7 @@ namespace VGraphPort.DataLayers
 
         public void SelectTool(string tool)
         {
-            ToolActive = tool.Equals("Text_Tool");
+            ToolActive = tool.Equals("TextTool");
         }
 
         public void HandleCreationClick(SKPointI target, SKPointI targetGrid)
