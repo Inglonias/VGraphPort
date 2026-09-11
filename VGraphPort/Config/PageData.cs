@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using SkiaSharp;
 using VGraphPort.DataLayers;
+using VGraphPort.Objects;
 using VGraphPort.Views;
 
 namespace VGraphPort.Config
@@ -113,6 +114,7 @@ namespace VGraphPort.Config
                     MainWindow.IsHitTestVisible = true;
                     MainWindow.IsEnabled = true;
                 });
+                MainWindow.InvalidateVisual();
             }
         }
 
@@ -143,46 +145,46 @@ namespace VGraphPort.Config
         /// </summary>
         /// <param name="fileName">Path to the file that will be loaded</param>
         /// <returns>True if the file is valid and no errors occurred. False otherwise.</returns>
-        // public bool FileOpen(string fileName)
-        // {
-        //     VgpFile saveFile;
-        //     try
-        //     {
-        //         string jsonString = File.ReadAllText(fileName);
-        //         saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
-        //         SquaresWide = saveFile.SquaresWide;
-        //         SquaresTall = saveFile.SquaresTall;
-        //         SquareSize = saveFile.SquareSize;
-        //         TrueSquareSize = saveFile.SquareSize;
-        //         MarginX = saveFile.MarginX;
-        //         MarginY = saveFile.MarginY;
-        //         SetBackgroundImage(saveFile.BackgroundImagePath);
-        //
-        //         LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
-        //         TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
-        //
-        //         lineLayer.ClearAllLines();
-        //         lineLayer.AddNewLines(saveFile.Lines.ToArray());
-        //         textLayer.ClearAllLabels();
-        //         //Text label was added later, so this may be null.
-        //         if (saveFile.Labels != null)
-        //         {
-        //             textLayer.AddNewLabels(saveFile.Labels.ToArray());
-        //         }
-        //
-        //         foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
-        //         {
-        //             l.Value.ForceRedraw();
-        //         }
-        //     }
-        //     catch (Exception)
-        //     {
-        //         return false;
-        //     }
-        //     MakeCanvasClean();
-        //     LastSavePath = fileName;
-        //     return true;
-        // }
+        public bool FileOpen(string fileName)
+        {
+            VgpFile saveFile;
+            try
+            {
+                string jsonString = File.ReadAllText(fileName);
+                saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                SquaresWide = saveFile.SquaresWide;
+                SquaresTall = saveFile.SquaresTall;
+                SquareSize = saveFile.SquareSize;
+                TrueSquareSize = saveFile.SquareSize;
+                MarginX = saveFile.MarginX;
+                MarginY = saveFile.MarginY;
+                SetBackgroundImage(saveFile.BackgroundImagePath);
+        
+                LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
+                TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
+        
+                lineLayer.ClearAllLines();
+                lineLayer.AddNewLines(saveFile.Lines.ToArray());
+                textLayer.ClearAllLabels();
+                //Text label was added later, so this may be null.
+                if (saveFile.Labels != null)
+                {
+                    textLayer.AddNewLabels(saveFile.Labels.ToArray());
+                }
+        
+                foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
+                {
+                    l.Value.ForceRedraw();
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            MakeCanvasClean();
+            LastSavePath = fileName;
+            return true;
+        }
 
         /// <summary>
         /// Attempt to import the VGP file from the path passed to the function.
@@ -190,128 +192,128 @@ namespace VGraphPort.Config
         /// </summary>
         /// <param name="fileName">Path to the file that will be loaded</param>
         /// <returns>True if the file is valid and no errors occurred. False otherwise.</returns>
-        // public bool FileImport(string fileName)
-        // {
-        //     VgpFile saveFile;
-        //     try
-        //     {
-        //         string jsonString = File.ReadAllText(fileName);
-        //         saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
-        //         SquaresWide = Math.Max(this.SquaresWide, saveFile.SquaresWide);
-        //         SquaresTall = Math.Max(this.SquaresTall, saveFile.SquaresTall);
-        //
-        //         LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
-        //         TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
-        //
-        //         PageHistory.Instance.CreateUndoPoint(lineLayer.LineList, textLayer.LabelList, true);
-        //         lineLayer.AddNewLines(saveFile.Lines.ToArray());
-        //
-        //         //Text label was added later, so this may be null.
-        //         if (saveFile.Labels != null)
-        //         {
-        //             textLayer.AddNewLabels(saveFile.Labels.ToArray());
-        //         }
-        //         foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
-        //         {
-        //             l.Value.ForceRedraw();
-        //         }
-        //     }
-        //     catch (Exception)
-        //     {
-        //         return false;
-        //     }
-        //     MakeCanvasDirty();
-        //     return true;
-        // }
+        public bool FileImport(string fileName)
+        {
+            VgpFile saveFile;
+            try
+            {
+                string jsonString = File.ReadAllText(fileName);
+                saveFile = JsonSerializer.Deserialize<VgpFile>(jsonString);
+                SquaresWide = Math.Max(this.SquaresWide, saveFile.SquaresWide);
+                SquaresTall = Math.Max(this.SquaresTall, saveFile.SquaresTall);
+        
+                LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
+                TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
+        
+                PageHistory.Instance.CreateUndoPoint(lineLayer.LineList, textLayer.LabelList, true);
+                lineLayer.AddNewLines(saveFile.Lines.ToArray());
+        
+                //Text label was added later, so this may be null.
+                if (saveFile.Labels != null)
+                {
+                    textLayer.AddNewLabels(saveFile.Labels.ToArray());
+                }
+                foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
+                {
+                    l.Value.ForceRedraw();
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            MakeCanvasDirty();
+            return true;
+        }
 
         /// <summary>
         /// Saves the currently loaded canvas to the path specified.
         /// </summary>
         /// <param name="fileName">Path to the file to save</param>
         /// <returns>True if the save operation was successful. False otherwise.</returns>
-        // public bool FileSave(string fileName)
-        // {
-        //     LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
-        //     TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
-        //     VgpFile saveFile = new VgpFile
-        //     {
-        //         SquaresWide = SquaresWide,
-        //         SquaresTall = SquaresTall,
-        //         SquareSize = TrueSquareSize,
-        //         MarginX = MarginX,
-        //         MarginY = MarginY,
-        //         BackgroundImagePath = BackgroundImagePath,
-        //         Lines = lineLayer.LineList,
-        //         Labels = textLayer.LabelList
-        //     };
-        //     string jsonString = JsonSerializer.Serialize(saveFile);
-        //     try
-        //     {
-        //         File.WriteAllText(fileName, jsonString);
-        //     }
-        //     catch (Exception)
-        //     {
-        //         return false;
-        //     }
-        //     LastSavePath = fileName;
-        //     MakeCanvasClean();
-        //     return true;
-        // }
-        //
-        // public bool FileSave()
-        // {
-        //     return FileSave(LastSavePath);
-        // }
+        public bool FileSave(string fileName)
+        {
+            LineLayer lineLayer = (LineLayer)DataLayers[LINE_LAYER];
+            TextLayer textLayer = (TextLayer)DataLayers[TEXT_LAYER];
+            VgpFile saveFile = new VgpFile
+            {
+                SquaresWide = SquaresWide,
+                SquaresTall = SquaresTall,
+                SquareSize = TrueSquareSize,
+                MarginX = MarginX,
+                MarginY = MarginY,
+                BackgroundImagePath = BackgroundImagePath,
+                Lines = lineLayer.LineList,
+                Labels = textLayer.LabelList
+            };
+            string jsonString = JsonSerializer.Serialize(saveFile);
+            try
+            {
+                File.WriteAllText(fileName, jsonString);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            LastSavePath = fileName;
+            MakeCanvasClean();
+            return true;
+        }
+        
+        public bool FileSave()
+        {
+            return FileSave(LastSavePath);
+        }
 
         /// <summary>
         /// Creates a PNG image of the current canvas at the specified path in the file system.
         /// </summary>
         /// <param name="fileName">Path to the image to save.</param>
         /// <returns>True if the file exports successfully. False otherwise.</returns>
-        // public bool FileExport(string fileName)
-        // {
-        //     SquareSize = TrueSquareSize;
-        //     foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
-        //     {
-        //         l.Value.ForceRedraw();
-        //     }
-        //     SKFileWStream exportedImage = new SKFileWStream(fileName);
-        //     SKBitmap composite = new SKBitmap(GetTotalWidth(), GetTotalHeight());
-        //     SKCanvas canvas = new SKCanvas(composite);
-        //     using (SKPaint whiteBrush = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Fill })
-        //     {
-        //         canvas.DrawRect(0, 0, composite.Width, composite.Height, whiteBrush);
-        //     }
-        //     GridBackgroundLayer gridBackgroundLayer = (GridBackgroundLayer)DataLayers[GRID_LAYER];
-        //     bool centerLineState = gridBackgroundLayer.DrawCenterLines;
-        //     bool gridLineState = gridBackgroundLayer.DrawGridLines;
-        //     bool backgroundImageState = gridBackgroundLayer.DrawBackgroundImage;
-        //     gridBackgroundLayer.DrawCenterLines = ExportCenterLines;
-        //     gridBackgroundLayer.DrawGridLines = ExportGridLines;
-        //     gridBackgroundLayer.DrawBackgroundImage = ExportBackgroundImage;
-        //     foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
-        //     {
-        //         if (l.Value.DrawInExport)
-        //         {
-        //             SKBitmap? layer = l.Value.GenerateLayerBitmap();
-        //             if (layer != null)
-        //             {
-        //                 canvas.DrawBitmap(l.Value.GenerateLayerBitmap(), l.Value.GetRenderPoint());
-        //             }
-        //         }
-        //     }
-        //     bool result = composite.Encode(exportedImage, SKEncodedImageFormat.Png, 0);
-        //     composite.Dispose();
-        //     exportedImage.Dispose();
-        //     gridBackgroundLayer.DrawCenterLines = centerLineState;
-        //     gridBackgroundLayer.DrawGridLines = gridLineState;
-        //     gridBackgroundLayer.DrawBackgroundImage = backgroundImageState;
-        //     if (centerLineState || gridLineState || backgroundImageState)
-        //     {
-        //         gridBackgroundLayer.ForceRedraw();
-        //     }
-        //     return result;
-        // }
+        public bool FileExport(string fileName)
+        {
+            SquareSize = TrueSquareSize;
+            foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
+            {
+                l.Value.ForceRedraw();
+            }
+            SKFileWStream exportedImage = new SKFileWStream(fileName);
+            SKBitmap composite = new SKBitmap(GetTotalWidth(), GetTotalHeight());
+            SKCanvas canvas = new SKCanvas(composite);
+            using (SKPaint whiteBrush = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Fill })
+            {
+                canvas.DrawRect(0, 0, composite.Width, composite.Height, whiteBrush);
+            }
+            GridBackgroundLayer gridBackgroundLayer = (GridBackgroundLayer)DataLayers[GRID_LAYER];
+            bool centerLineState = gridBackgroundLayer.DrawCenterLines;
+            bool gridLineState = gridBackgroundLayer.DrawGridLines;
+            bool backgroundImageState = gridBackgroundLayer.DrawBackgroundImage;
+            gridBackgroundLayer.DrawCenterLines = ExportCenterLines;
+            gridBackgroundLayer.DrawGridLines = ExportGridLines;
+            gridBackgroundLayer.DrawBackgroundImage = ExportBackgroundImage;
+            foreach (KeyValuePair<string, IDataLayer> l in DataLayers)
+            {
+                if (l.Value.DrawInExport)
+                {
+                    SKImage? layer = l.Value.GenerateLayerImage();
+                    if (layer != null)
+                    {
+                        canvas.DrawImage(l.Value.GenerateLayerImage(), l.Value.GetRenderPoint());
+                    }
+                }
+            }
+            bool result = composite.Encode(exportedImage, SKEncodedImageFormat.Png, 0);
+            composite.Dispose();
+            exportedImage.Dispose();
+            gridBackgroundLayer.DrawCenterLines = centerLineState;
+            gridBackgroundLayer.DrawGridLines = gridLineState;
+            gridBackgroundLayer.DrawBackgroundImage = backgroundImageState;
+            if (centerLineState || gridLineState || backgroundImageState)
+            {
+                gridBackgroundLayer.ForceRedraw();
+            }
+            return result;
+        }
 
         /// <summary>
         /// Zooms in the user's view by increasing the square size of the grid, up to a maximum of 64 pixels per square.
