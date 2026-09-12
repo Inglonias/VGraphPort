@@ -3,6 +3,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using System.Collections.Generic;
 using Avalonia.Platform.Storage;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
 using VGraphPort.ViewModels;
@@ -16,7 +18,29 @@ namespace VGraphPort.Views
         public MenuBarControl()
         {
             InitializeComponent();
+
+            this.DataContextChanged += (_, _) =>
+            {
+                if (DataContext is MenuBarModel vm)
+                {
+                    vm.RequestUnsavedChangesConfirmation = async () =>
+                    {
+                        var box = MessageBoxManager.GetMessageBoxStandard(
+                            "Warning - Unsaved changes",
+                            "You have unsaved changes. Are you sure you want to continue?",
+                            ButtonEnum.YesNo);
+
+                        var result = await box.ShowAsync();
+                        return result == ButtonResult.Yes;
+                    };
+                    vm.ShowNewGridWindow += (_, deleteLines) =>
+                    {
+                        OpenNewGridWindow(deleteLines);
+                    };
+                }
+            };
         }
+
         
         private void ToolMenu_OnChecked(object sender, RoutedEventArgs e)
         {
