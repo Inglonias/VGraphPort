@@ -13,6 +13,30 @@ namespace VGraphPort.DataLayers
         public List<IDataLayer> Layers { get; set; } = new List<IDataLayer>();
         public Rect Bounds => GetBounds();
 
+        public LayerDrawOperation()
+        {
+            //Create layers.
+            GridBackgroundLayer lGrid = new GridBackgroundLayer();
+            LineLayer lLines = new LineLayer();
+            TextLayer lText = new TextLayer();
+            CursorLayer lCursor = new CursorLayer();
+            PreviewLayer lPreview = new PreviewLayer();
+            
+            //Assign page data
+            PageData.Instance.GetDataLayers()[PageData.GRID_LAYER] = lGrid;
+            PageData.Instance.GetDataLayers()[PageData.LINE_LAYER] = lLines;
+            PageData.Instance.GetDataLayers()[PageData.PREVIEW_LAYER] = lPreview;
+            PageData.Instance.GetDataLayers()[PageData.TEXT_LAYER] = lText;
+            PageData.Instance.GetDataLayers()[PageData.CURSOR_LAYER] = lCursor;
+            
+            //Add layers to the rendering stack.
+            Layers.Add(lGrid);
+            Layers.Add(lLines);
+            Layers.Add(lText);
+            Layers.Add(lCursor);
+            Layers.Add(lPreview);
+        }
+        
         public void Dispose()
         {
             

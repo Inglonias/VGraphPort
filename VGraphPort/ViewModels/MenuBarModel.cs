@@ -14,6 +14,7 @@ public partial class MenuBarModel : ViewModelBase
 {
     [ObservableProperty] public partial bool UndoEnabled { get; set; } = false;
     [ObservableProperty] public partial bool RedoEnabled { get; set; } = false;
+    [ObservableProperty] public partial bool CenterLinesEnabled { get; set; }
 
     //Commands
     public ICommand CreateNewGridCommand { get; }

@@ -13,10 +13,12 @@ public partial class MainViewModel : ViewModelBase
     public ICommand MoveThingsDownCommand { get; }
     public ICommand MoveThingsRightCommand { get; }
     public ICommand DeleteThingsCommand { get; }
-    public event EventHandler? UpdateMainCanvasVisual;
+    public MainCanvasModel CanvasModel { get; }
 
     public MainViewModel()
     {
+        CanvasModel = new MainCanvasModel();
+        
         MoveThingsUpCommand = new RelayCommand(MoveThingsUp);
         MoveThingsLeftCommand = new RelayCommand(MoveThingsLeft);
         MoveThingsDownCommand = new RelayCommand(MoveThingsDown);
@@ -30,7 +32,6 @@ public partial class MainViewModel : ViewModelBase
         TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
         lineLayer.MoveSelectedLines(x, y);
         textLayer.MoveSelectedLabels(x, y);
-        UpdateMainCanvasVisual?.Invoke(this, EventArgs.Empty);
     }
     
     private void MoveThingsUp()
@@ -57,7 +58,6 @@ public partial class MainViewModel : ViewModelBase
         TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
         lineLayer.DeleteSelectedLines();
         textLayer.DeleteSelectedLabels();
-        UpdateMainCanvasVisual?.Invoke(this, EventArgs.Empty);
     }
     
 }

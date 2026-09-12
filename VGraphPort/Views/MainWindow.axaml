@@ -33,7 +33,7 @@
             <local:MenuBarControl x:Name="MainMenuBar"></local:MenuBarControl>
         </DockPanel>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible">
-            <local:MainCanvas x:Name="PrimaryDrawingPanel"/>
+            <local:MainCanvas DataContext="{Binding CanvasModel}" x:Name="PrimaryDrawingPanel"/>
         </ScrollViewer>
     </Grid>
 

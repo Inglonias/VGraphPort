@@ -25,7 +25,6 @@ namespace VGraphPort.DataLayers
         public List<LineSegment> LineList { get; set; } = new List<LineSegment>();
         private bool _redrawRequired;
         public bool PreviewPointActive = false;
-        private const int historyCapacity = 20;
 
         public IDrawTool? SelectedTool { get; set; }
         private SKImage? _lastImage;
@@ -115,7 +114,6 @@ namespace VGraphPort.DataLayers
         public void MergeAllLines()
         {
             PageHistory.Instance.CreateUndoPoint(LineList, null, true);
-            List<LineSegment> finalList = new List<LineSegment>();
             bool recheck = true;
             while (recheck)
             {
@@ -132,7 +130,6 @@ namespace VGraphPort.DataLayers
                             recheck = true;
                         }
                     }
-                    finalList.Add(LineList[i]);
                 }
             }
             PageData.Instance.MakeCanvasDirty();
@@ -140,13 +137,13 @@ namespace VGraphPort.DataLayers
 
         public int MirrorLines(int direction, int crease, bool destroyOtherSide, bool oddMode)
         {
-            const int LEFT_TO_RIGHT = 0;
-            const int RIGHT_TO_LEFT = 1;
-            const int TOP_TO_BOTTOM = 2;
-            const int BOTTOM_TO_TOP = 3;
+            const int leftToRight = 0;
+            const int rightToLeft = 1;
+            const int topToBottom = 2;
+            const int bottomToTop = 3;
 
-            const int SUCCESS = 0;
-            const int LINES_ACROSS_CREASE = 1;
+            const int successStatus = 0;
+            const int linesAcrossCreaseStatus = 1;
 
             List<LineSegment> linesToMirror = new();
             List<LineSegment> linesAcrossCrease = new();
@@ -154,14 +151,14 @@ namespace VGraphPort.DataLayers
             //Check if any lines cross the crease. If they do, select them and pop up a message.
             foreach (LineSegment l in LineList)
             {
-                if (direction == LEFT_TO_RIGHT || direction == RIGHT_TO_LEFT)
+                if (direction == leftToRight || direction == rightToLeft)
                 {
                     if ((l.StartPointGrid.X < crease && l.EndPointGrid.X > crease) || (l.StartPointGrid.X > crease && l.EndPointGrid.X < crease))
                     {
                         linesAcrossCrease.Add(l);
                     }
                 }
-                if (direction == TOP_TO_BOTTOM || direction == BOTTOM_TO_TOP)
+                if (direction == topToBottom || direction == bottomToTop)
                 {
                     if ((l.StartPointGrid.Y < crease && l.EndPointGrid.Y > crease) || (l.StartPointGrid.Y > crease && l.EndPointGrid.Y < crease))
                     {
@@ -178,35 +175,35 @@ namespace VGraphPort.DataLayers
                     l.IsSelected = true;
                 }
                 ForceRedraw();
-                return LINES_ACROSS_CREASE;
+                return linesAcrossCreaseStatus;
             }
 
             foreach (LineSegment l in LineList)
             {
                 switch (direction)
                 {
-                    case LEFT_TO_RIGHT:
+                    case leftToRight:
                         if (l.StartPointGrid.X <= crease && l.EndPointGrid.X <= crease)
                         {
                             linesToMirror.Add(l);
                         }
                         break;
 
-                    case RIGHT_TO_LEFT:
+                    case rightToLeft:
                         if (l.StartPointGrid.X >= crease && l.EndPointGrid.X >= crease)
                         {
                             linesToMirror.Add(l);
                         }
                         break;
 
-                    case TOP_TO_BOTTOM:
+                    case topToBottom:
                         if (l.StartPointGrid.Y <= crease && l.EndPointGrid.Y <= crease)
                         {
                             linesToMirror.Add(l);
                         }
                         break;
 
-                    case BOTTOM_TO_TOP:
+                    case bottomToTop:
                         if (l.StartPointGrid.Y >= crease && l.EndPointGrid.Y >= crease)
                         {
                             linesToMirror.Add(l);
@@ -225,7 +222,7 @@ namespace VGraphPort.DataLayers
 
             foreach (LineSegment l in linesToMirror)
             {
-                if (direction == LEFT_TO_RIGHT || direction == RIGHT_TO_LEFT)
+                if (direction == leftToRight || direction == rightToLeft)
                 {
                     AddNewLine(l.MirrorLineSegment(crease, null, oddMode));
                 }
@@ -236,7 +233,7 @@ namespace VGraphPort.DataLayers
             }
             PageData.Instance.MakeCanvasDirty();
             ForceRedraw();
-            return SUCCESS;
+            return successStatus;
         }
 
         public LineSegment[] GetSelectedLines()

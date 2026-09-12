@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="New" Click="NewGridButton_OnClick"/>
+                <MenuItem Header="New" HotKey="Ctrl+N" InputGesture="Ctrl+N" Click="NewGridButton_OnClick"/>
                 <MenuItem Header="Open" Click="OpenButton_OnClick"/>
                 <MenuItem Header="Save" Click="SaveButton_OnClick"/>
                 <MenuItem Header="Save As" Click="SaveAsButton_OnClick"/>
@@ -31,8 +31,8 @@
                 <MenuItem Header="Exit" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem x:Name="UndoButton" Header="Undo"/>
-                <MenuItem x:Name="RedoButton" Header="Redo"/>
+                <MenuItem x:Name="UndoButton" Header="Undo" IsEnabled="{Binding UndoEnabled}"/>
+                <MenuItem x:Name="RedoButton" Header="Redo" IsEnabled="{Binding RedoEnabled}"/>
                 <Separator />
                 <MenuItem x:Name="ResizeButton" Header="Resize Canvas" Click="ResizeButton_OnClick"/>
                 <Separator />
