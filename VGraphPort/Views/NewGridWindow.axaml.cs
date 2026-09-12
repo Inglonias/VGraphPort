@@ -11,16 +11,26 @@ public partial class NewGridWindow : Window
 {
 
     public event EventHandler? NewGridWindowComplete;
+    public required MainWindow ParentWindow { get; init; }
     public NewGridWindow()
     {
         InitializeComponent();
-        PageData.Instance.LockMainWindow();
         InvalidateVisual();
+    }
+
+    protected override void OnLoaded(RoutedEventArgs e)
+    {
+        base.OnLoaded(e);
+        ParentWindow.Closed += (_, _) =>
+        {
+            this.Close();
+        };
     }
 
     private void NewGridWindow_OnCancel(object sender, RoutedEventArgs e)
     {
-        PageData.Instance.UnlockMainWindow();
+        ParentWindow.IsHitTestVisible = true;
+        ParentWindow.IsEnabled = true;
         Close();
     }
 
@@ -29,8 +39,10 @@ public partial class NewGridWindow : Window
         if (DataContext is NewGridWindowModel vm)
         {
             vm.FinishGridSetup();
+            ParentWindow.IsHitTestVisible = true;
+            ParentWindow.IsEnabled = true;
         }
-        PageData.Instance.UnlockMainWindow();
+        
         NewGridWindowComplete?.Invoke(this, EventArgs.Empty);
         Close();
     }

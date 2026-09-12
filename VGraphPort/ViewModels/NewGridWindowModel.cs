@@ -23,7 +23,6 @@ public partial class NewGridWindowModel : ViewModelBase
 
     [ObservableProperty] public partial int BackgroundImageOpacitySliderValue { get; set; }
     
-    public event EventHandler? NewGridOkPressed;
     public ICommand PressOkCommand { get; }
 
 
@@ -70,8 +69,6 @@ public partial class NewGridWindowModel : ViewModelBase
             }
 
             lineLayer.ForceRedraw();
-            PageData.Instance.UnlockMainWindow();
-            NewGridOkPressed?.Invoke(this, EventArgs.Empty);
         }
         catch (FormatException)
         {

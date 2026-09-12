@@ -93,29 +93,29 @@ namespace VGraphPort.Config
             }
         }
 
-        public void LockMainWindow()
-        {
-            if (MainWindow is not null)
-            {
-                MainWindow.Dispatcher.Invoke(() =>
-                {
-                    MainWindow.IsHitTestVisible = false;
-                    MainWindow.IsEnabled = false;
-                });
-            }
-        }
-
-        public void UnlockMainWindow()
-        {
-            if (MainWindow is not null)
-            {
-                MainWindow.Dispatcher.Invoke(() =>
-                {
-                    MainWindow.IsHitTestVisible = true;
-                    MainWindow.IsEnabled = true;
-                });
-            }
-        }
+        // public void LockMainWindow()
+        // {
+        //     if (MainWindow is not null)
+        //     {
+        //         MainWindow.Dispatcher.Invoke(() =>
+        //         {
+        //             MainWindow.IsHitTestVisible = false;
+        //             MainWindow.IsEnabled = false;
+        //         });
+        //     }
+        // }
+        //
+        // public void UnlockMainWindow()
+        // {
+        //     if (MainWindow is not null)
+        //     {
+        //         MainWindow.Dispatcher.Invoke(() =>
+        //         {
+        //             MainWindow.IsHitTestVisible = true;
+        //             MainWindow.IsEnabled = true;
+        //         });
+        //     }
+        // }
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit

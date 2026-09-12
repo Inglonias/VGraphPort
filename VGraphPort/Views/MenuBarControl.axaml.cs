@@ -172,7 +172,10 @@ namespace VGraphPort.Views
         
         private void OpenNewGridWindow(bool deleteLines)
         {
-            NewGridWindow ngw = new NewGridWindow();
+            NewGridWindow ngw = new NewGridWindow
+            {
+                ParentWindow = this.ParentWindow
+            };
             var ngwm = new NewGridWindowModel
             {
                 DeleteLines = deleteLines
@@ -183,6 +186,8 @@ namespace VGraphPort.Views
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             };
+            ParentWindow.IsHitTestVisible = false;
+            ParentWindow.IsEnabled = false;
             ngw.Show();
         }
         
