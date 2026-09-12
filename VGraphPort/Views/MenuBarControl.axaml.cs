@@ -11,6 +11,7 @@ using VGraphPort.ViewModels;
 
 namespace VGraphPort.Views
 {
+    //TODO: Refactor everything that uses PageData
     public partial class MenuBarControl : UserControl
     {
         public required MainWindow ParentWindow { get; set; }
@@ -40,7 +41,6 @@ namespace VGraphPort.Views
                 }
             };
         }
-
         
         private void ToolMenu_OnChecked(object sender, RoutedEventArgs e)
         {
@@ -79,19 +79,8 @@ namespace VGraphPort.Views
 
         private void OddMode_OnClick(object sender, RoutedEventArgs e)
         {
-            PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
+            PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER); 
             previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
-        }
-
-
-        private void NewGridButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            OpenNewGridWindow(true);
-        }
-
-        private void ResizeButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            OpenNewGridWindow(false);
         }
 
         private async void OpenButton_OnClick(object? sender, RoutedEventArgs e)
@@ -105,7 +94,7 @@ namespace VGraphPort.Views
             });
             if (file.Count > 0)
             {
-                PageData.Instance.FileOpen(file[0].Path.ToString().Substring(7)); //Remove the preceding "file//")
+                PageData.Instance.FileOpen(file[0].Path.ToString().Substring(7)); //Remove the preceding "file//") 
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             }
