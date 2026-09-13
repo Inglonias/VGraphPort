@@ -169,6 +169,51 @@ namespace VGraphPort.Views
             }
         }
         
+        private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.UndoLastAction();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+
+        private void RedoButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.RedoLastAction();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+
+        private void CenterLinesButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                CenterLinesButton.IsChecked = vm.ToggleCenterLines();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+
+        private void GridLinesButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                GridLinesButton.IsChecked = vm.ToggleGridLines();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+
+        private void BackgroundImageButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                BackgroundImageButton.IsChecked = vm.ToggleBackgroundImage();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+        
         private void OpenNewGridWindow(bool deleteLines)
         {
             NewGridWindow ngw = new NewGridWindow
@@ -205,23 +250,5 @@ namespace VGraphPort.Views
                 "application/x-vgp"
             }
         };
-
-        private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (DataContext is MenuBarModel vm)
-            {
-                vm.UndoLastAction();
-            }
-            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
-        }
-
-        private void RedoButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (DataContext is MenuBarModel vm)
-            {
-                vm.RedoLastAction();
-            }
-            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
-        }
     }
 }

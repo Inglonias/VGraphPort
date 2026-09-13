@@ -42,9 +42,9 @@
                 <MenuItem Header="Zoom In" />
                 <MenuItem Header="Zoom Out" />
                 <Separator />
-                <MenuItem x:Name="CenterLinesButton" Header="Show Center Lines" ToggleType="CheckBox" IsChecked="False"/>
-                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" ToggleType="CheckBox" IsChecked="True"/>
-                <MenuItem x:Name="BackgroundImageButton" Header="Show Background Image" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="CenterLinesButton" Header="Show Center Lines" HotKey="Ctrl+T" InputGesture="Ctrl+T" ToggleType="CheckBox" IsChecked="False" Click="CenterLinesButton_OnClick"/>
+                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" HotKey="Ctrl+G" InputGesture="Ctrl+G" ToggleType="CheckBox" IsChecked="True" Click="GridLinesButton_OnClick"/>
+                <MenuItem x:Name="BackgroundImageButton" Header="Show Background Image" HotKey="Ctrl+B" InputGesture="Ctrl+B" ToggleType="CheckBox" IsChecked="True" Click="BackgroundImageButton_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="Merge Lines" />

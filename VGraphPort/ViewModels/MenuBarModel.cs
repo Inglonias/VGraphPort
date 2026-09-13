@@ -14,6 +14,7 @@ public partial class MenuBarModel : ViewModelBase
 {
     [ObservableProperty] public partial bool UndoEnabled { get; set; } = false;
     [ObservableProperty] public partial bool RedoEnabled { get; set; } = false;
+
     public Func<Task<bool>>? RequestUnsavedChangesConfirmation { get; set; }
 
     public event EventHandler<bool>? ShowNewGridWindow;
@@ -155,5 +156,23 @@ public partial class MenuBarModel : ViewModelBase
             textLayer.ForceRedraw();
         }
         CheckEditButtonValidity();
+    }
+
+    public bool ToggleCenterLines()
+    {
+        GridBackgroundLayer gridLayer = (GridBackgroundLayer)PageData.Instance.GetDataLayer(PageData.GRID_LAYER);
+        return gridLayer.ToggleCenterLines();
+    }
+    
+    public bool ToggleGridLines()
+    {
+        GridBackgroundLayer gridLayer = (GridBackgroundLayer)PageData.Instance.GetDataLayer(PageData.GRID_LAYER);
+        return gridLayer.ToggleGridLines();
+    }
+    
+    public bool ToggleBackgroundImage()
+    {
+        GridBackgroundLayer gridLayer = (GridBackgroundLayer)PageData.Instance.GetDataLayer(PageData.GRID_LAYER);
+        return gridLayer.ToggleBackgroundImage();
     }
 }
