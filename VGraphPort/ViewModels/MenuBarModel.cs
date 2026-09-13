@@ -107,6 +107,7 @@ public partial class MenuBarModel : ViewModelBase
     public void ImportVgp(string filePath)
     {
         PageData.Instance.FileImport(filePath);
+        CheckEditButtonValidity();
     }
 
     public void ExportVgp(string filePath)
