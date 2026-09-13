@@ -5,17 +5,13 @@ using System.Collections.Generic;
 using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using VGraphPort.Config;
-using VGraphPort.DataLayers;
 using VGraphPort.ViewModels;
 
 namespace VGraphPort.Views
 {
-    //TODO: Refactor everything that uses PageData
     public partial class MenuBarControl : UserControl
     {
         public required MainWindow ParentWindow { get; set; }
-        //Commands
         public MenuBarControl()
         {
             InitializeComponent();
@@ -71,16 +67,19 @@ namespace VGraphPort.Views
             {
                 m.IsChecked = m.Name != null && m.Name.Equals(tool);
             }
-            LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
-            TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
-            lineLayer.SelectTool(tool);
-            textLayer.SelectTool(tool);
+
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.SelectTool(tool);
+            }
         }
 
         private void OddMode_OnClick(object sender, RoutedEventArgs e)
         {
-            PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER); 
-            previewLayer.OddMode = OddModeCheckbox.IsChecked ?? false;
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.ToggleOddMode(OddModeCheckbox.IsChecked.GetValueOrDefault());
+            }
         }
 
         private async void OpenButton_OnClick(object? sender, RoutedEventArgs e)
@@ -94,7 +93,10 @@ namespace VGraphPort.Views
             });
             if (file.Count > 0)
             {
-                PageData.Instance.FileOpen(file[0].Path.ToString().Substring(7)); //Remove the preceding "file//") 
+                if (DataContext is MenuBarModel vm)
+                {
+                    vm.OpenVgpFile(file[0].Path.ToString().Substring(7));
+                }
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             }
@@ -102,13 +104,12 @@ namespace VGraphPort.Views
 
         private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(PageData.Instance.LastSavePath))
+            if (DataContext is MenuBarModel vm)
             {
-                PageData.Instance.FileSave(PageData.Instance.LastSavePath);
-            }
-            else
-            {
-                SaveAsButton_OnClick(sender, e);
+                if (!vm.SaveCurrentVgp())
+                {
+                    SaveAsButton_OnClick(sender, e);
+                }
             }
         }
         
@@ -123,7 +124,10 @@ namespace VGraphPort.Views
             });
             if (file is not null)
             {
-                PageData.Instance.FileOpen(file.Path.ToString()[7..]); //Remove the preceding "file//")
+                if (DataContext is MenuBarModel vm)
+                {
+                    vm.SaveNewVgp(file.Path.ToString()[7..]);
+                }
             }
         }
         
@@ -138,7 +142,10 @@ namespace VGraphPort.Views
             });
             if (file.Count > 0)
             {
-                PageData.Instance.FileOpen(file[0].Path.ToString()[7..]); //Remove the preceding "file//")
+                if (DataContext is MenuBarModel vm)
+                {
+                    vm.ImportVgp(file[0].Path.ToString()[7..]);
+                }
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             }
@@ -155,7 +162,10 @@ namespace VGraphPort.Views
             });
             if (file is not null)
             {
-                PageData.Instance.FileExport(file.Path.ToString()[7..]); //Remove the preceding "file//")
+                if (DataContext is MenuBarModel vm)
+                {
+                    vm.ExportVgp(file.Path.ToString()[7..]);
+                }
             }
         }
         
