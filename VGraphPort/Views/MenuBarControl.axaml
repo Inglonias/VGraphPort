@@ -3,6 +3,7 @@
              xmlns:vm="using:VGraphPort.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:acp="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VGraphPort.Views.MenuBarControl"
              x:DataType="vm:MenuBarModel">
@@ -79,15 +80,7 @@
                 <Image Source="avares://VGraphPort/Assets/Texttool.png"></Image>
             </ToggleButton>
             <CheckBox Content="Odd Mode" x:Name="OddModeCheckbox" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="32,0,0,0" Click="OddMode_OnClick"/>
-            <Button Height="24" Margin="16,0" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Text="Line Color" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Grid>
-            </Button>
+            <ColorPicker Margin="10 0" Color="{Binding ChosenColor, Mode=TwoWay}"/>
             <ToggleButton x:Name="EyedropperTool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1">
                 <Image Source="avares://VGraphPort/Assets/Eyedropper.png"></Image>
             </ToggleButton>

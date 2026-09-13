@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Media;
+using Avalonia.Skia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VGraphPort.Config;
@@ -15,6 +17,13 @@ public partial class MenuBarModel : ViewModelBase
     [ObservableProperty] public partial bool UndoEnabled { get; set; } = false;
     [ObservableProperty] public partial bool RedoEnabled { get; set; } = false;
 
+    public Color ChosenColor
+    {
+        get { return _chosenColor; }
+        set { _chosenColor = SetChosenColor(value); }
+    }
+
+    private Color _chosenColor;
     public Func<Task<bool>>? RequestUnsavedChangesConfirmation { get; set; }
 
     public event EventHandler<bool>? ShowNewGridWindow;
@@ -31,6 +40,10 @@ public partial class MenuBarModel : ViewModelBase
         {
             CheckEditButtonValidity();
         };
+        _chosenColor = Color.FromArgb(ConfigOptions.Instance.DefaultLineColor.Alpha,
+            ConfigOptions.Instance.DefaultLineColor.Red, 
+            ConfigOptions.Instance.DefaultLineColor.Green,
+            ConfigOptions.Instance.DefaultLineColor.Blue);
     }
 
     private void CreateNewGrid()
@@ -184,5 +197,12 @@ public partial class MenuBarModel : ViewModelBase
     {
         GridBackgroundLayer gridLayer = (GridBackgroundLayer)PageData.Instance.GetDataLayer(PageData.GRID_LAYER);
         return gridLayer.ToggleBackgroundImage();
+    }
+
+    public Color SetChosenColor(Color newColor)
+    {
+        _chosenColor = newColor;
+        PageData.Instance.CurrentLineColor = newColor.ToSKColor();
+        return _chosenColor;
     }
 }

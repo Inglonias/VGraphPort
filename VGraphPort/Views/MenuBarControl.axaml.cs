@@ -15,7 +15,6 @@ namespace VGraphPort.Views
         public MenuBarControl()
         {
             InitializeComponent();
-
             this.DataContextChanged += (_, _) =>
             {
                 if (DataContext is MenuBarModel vm)
