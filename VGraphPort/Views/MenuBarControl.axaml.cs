@@ -119,8 +119,8 @@ namespace VGraphPort.Views
             var file = await topLevel!.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save VGP File",
-                DefaultExtension = ".vgp",
-                SuggestedFileType = Vgp
+                DefaultExtension = "vgp",
+                FileTypeChoices = new[] { Vgp }
             });
             if (file is not null)
             {
@@ -157,7 +157,7 @@ namespace VGraphPort.Views
             var file = await topLevel!.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save Image",
-                DefaultExtension = ".png",
+                DefaultExtension = "png",
                 SuggestedFileType = FilePickerFileTypes.ImagePng
             });
             if (file is not null)
@@ -198,11 +198,11 @@ namespace VGraphPort.Views
             },
             AppleUniformTypeIdentifiers = (IReadOnlyList<string>) new string[1]
             {
-                "public.json"
+                "public.data"
             },
             MimeTypes = (IReadOnlyList<string>) new string[1]
             {
-                "application/json"
+                "application/x-vgp"
             }
         };
     }
