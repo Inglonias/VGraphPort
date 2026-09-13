@@ -158,6 +158,16 @@ public partial class MenuBarModel : ViewModelBase
         CheckEditButtonValidity();
     }
 
+    public void ZoomIn()
+    {
+        PageData.Instance.ZoomIn();
+    }
+
+    public void ZoomOut()
+    {
+        PageData.Instance.ZoomOut();
+    }
+    
     public bool ToggleCenterLines()
     {
         GridBackgroundLayer gridLayer = (GridBackgroundLayer)PageData.Instance.GetDataLayer(PageData.GRID_LAYER);

@@ -39,8 +39,8 @@
                 <MenuItem Header="Select All"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="Zoom In" />
-                <MenuItem Header="Zoom Out" />
+                <MenuItem Header="Zoom In" HotKey="Ctrl+Add" InputGesture="Ctrl+Add" Click="ZoomIn_OnClick"/>
+                <MenuItem Header="Zoom Out" HotKey="Ctrl+Subtract" InputGesture="Ctrl+Subtract" Click="ZoomOut_OnClick"/>
                 <Separator />
                 <MenuItem x:Name="CenterLinesButton" Header="Show Center Lines" HotKey="Ctrl+T" InputGesture="Ctrl+T" ToggleType="CheckBox" IsChecked="False" Click="CenterLinesButton_OnClick"/>
                 <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" HotKey="Ctrl+G" InputGesture="Ctrl+G" ToggleType="CheckBox" IsChecked="True" Click="GridLinesButton_OnClick"/>

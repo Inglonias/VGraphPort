@@ -187,6 +187,24 @@ namespace VGraphPort.Views
             ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
         }
 
+        private void ZoomIn_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.ZoomIn();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+        
+        private void ZoomOut_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.ZoomOut();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+        
         private void CenterLinesButton_OnClick(object? sender, RoutedEventArgs e)
         {
             if (DataContext is MenuBarModel vm)
