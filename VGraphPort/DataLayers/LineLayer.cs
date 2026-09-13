@@ -17,7 +17,7 @@ namespace VGraphPort.DataLayers
 
         public const string LineTool = "LineTool";
         public const string BoxTool = "BoxTool";
-        public const string TriTool = "Tri_ool";
+        public const string TriTool = "TriTool";
         public const string CircleTool = "CircleTool";
         public const string BoxyCircleTool = "BoxyCircleTool";
         public const string EllipseTool = "EllipseTool";
