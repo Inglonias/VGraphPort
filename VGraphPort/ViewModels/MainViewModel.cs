@@ -34,6 +34,7 @@ public partial class MainViewModel : ViewModelBase
         TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
         lineLayer.MoveSelectedLines(x, y);
         textLayer.MoveSelectedLabels(x, y);
+        CanvasModel.IncrementCanvasVersion();
     }
     
     private void MoveThingsUp()
@@ -60,6 +61,7 @@ public partial class MainViewModel : ViewModelBase
         TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
         lineLayer.DeleteSelectedLines();
         textLayer.DeleteSelectedLabels();
+        CanvasModel.IncrementCanvasVersion();
     }
 
     public void SetWindowTitle()

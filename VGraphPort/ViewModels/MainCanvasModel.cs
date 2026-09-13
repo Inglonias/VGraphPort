@@ -35,7 +35,7 @@ public partial class MainCanvasModel : ViewModelBase
             lCursor.StartClickDrag();
         }
         lCursor.MoveCursor(position);
-        CanvasVersion = (CanvasVersion + 1) % int.MaxValue;
+        IncrementCanvasVersion();
     }
 
     public void HandlePointerPressed(bool leftButtonPressed, bool rightButtonPressed, bool controlPressed, Point position)
@@ -60,6 +60,11 @@ public partial class MainCanvasModel : ViewModelBase
             }
         }
 
+        IncrementCanvasVersion();
+    }
+
+    public void IncrementCanvasVersion()
+    {
         CanvasVersion = (CanvasVersion + 1) % int.MaxValue;
     }
 }
