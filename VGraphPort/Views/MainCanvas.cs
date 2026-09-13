@@ -14,9 +14,10 @@ namespace VGraphPort.Views;
 
 public class MainCanvas : Control
 {
+    public event EventHandler? RenderEvent;
     private MainCanvasModel ViewModel => (MainCanvasModel)DataContext!;
 
-    private LayerDrawOperation _drawOp = new LayerDrawOperation();
+    private readonly LayerDrawOperation _drawOp = new LayerDrawOperation();
     private bool _redrawPending = true;
 
     public MainCanvas()
@@ -67,6 +68,7 @@ public class MainCanvas : Control
     public override void Render(DrawingContext context)
     {
         base.Render(context);
+        RenderEvent?.Invoke(this, EventArgs.Empty);
         context.Custom(_drawOp);
     }
     protected override void OnPointerMoved(PointerEventArgs e)

@@ -110,6 +110,8 @@ namespace VGraphPort.Views
                 {
                     SaveAsButton_OnClick(sender, e);
                 }
+
+                ParentWindow.PrimaryDrawingPanel.InvalidateVisual(); //To set the window title.
             }
         }
         

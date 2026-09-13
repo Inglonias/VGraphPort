@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
@@ -8,6 +9,7 @@ namespace VGraphPort.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    [ObservableProperty] public partial string WindowTitle { get; set; } = "VGraph";
     public ICommand MoveThingsUpCommand { get; }
     public ICommand MoveThingsLeftCommand { get; }
     public ICommand MoveThingsDownCommand { get; }
@@ -58,6 +60,11 @@ public partial class MainViewModel : ViewModelBase
         TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
         lineLayer.DeleteSelectedLines();
         textLayer.DeleteSelectedLabels();
+    }
+
+    public void SetWindowTitle()
+    {
+        WindowTitle = PageData.Instance.GetWindowTitle();
     }
     
 }

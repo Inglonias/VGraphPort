@@ -8,7 +8,7 @@
         x:Class="VGraphPort.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="VGraphPort">
+        Title="{Binding WindowTitle}">
         
     
     <Design.DataContext>
@@ -33,7 +33,7 @@
             <local:MenuBarControl x:Name="MainMenuBar"></local:MenuBarControl>
         </DockPanel>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible">
-            <local:MainCanvas DataContext="{Binding CanvasModel}" x:Name="PrimaryDrawingPanel"/>
+            <local:MainCanvas DataContext="{Binding CanvasModel}" x:Name="PrimaryDrawingPanel" RenderEvent="PrimaryDrawingPanel_OnRenderEvent"/>
         </ScrollViewer>
     </Grid>
 
