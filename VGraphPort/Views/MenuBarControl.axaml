@@ -14,13 +14,13 @@
         </Grid.RowDefinitions>
         <Menu HorizontalAlignment="Stretch" Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="New" HotKey="Ctrl+N" InputGesture="Ctrl+N" Command="{Binding CreateNewGridCommand}"/>
-                <MenuItem Header="Open" Click="OpenButton_OnClick"/>
-                <MenuItem Header="Save" Click="SaveButton_OnClick"/>
-                <MenuItem Header="Save As" Click="SaveAsButton_OnClick"/>
+                <MenuItem Header="New" HotKey="Ctrl+N" InputGesture="Ctrl+N" Command="{Binding CreateNewGridCommand}"/> <!-- This is a command because it involves the creation of a sub-window -->
+                <MenuItem Header="Open" HotKey="Ctrl+O" InputGesture="Ctrl+O" Click="OpenButton_OnClick"/>
+                <MenuItem Header="Save" HotKey="Ctrl+S" InputGesture="Ctrl+S" Click="SaveButton_OnClick"/>
+                <MenuItem Header="Save As" HotKey="Ctrl+Alt+S" InputGesture="Ctrl+Alt+S" Click="SaveAsButton_OnClick"/>
                 <Separator />
-                <MenuItem Header="Import" Click="ImportButton_OnClick"/>
-                <MenuItem Header="Export" Click="ExportButton_OnClick"/>
+                <MenuItem Header="Import" HotKey="Ctrl+I" InputGesture="Ctrl+I" Click="ImportButton_OnClick"/>
+                <MenuItem Header="Export" HotKey="Ctrl+Alt+E" InputGesture="Ctrl+Alt+E" Click="ExportButton_OnClick"/>
                 <Separator />
                 <MenuItem Header="Export Settings">
                     <MenuItem x:Name="ExportCenterLines" Header="Export with Center Lines" ToggleType="CheckBox" IsChecked="False"/>
@@ -31,10 +31,10 @@
                 <MenuItem Header="Exit" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem x:Name="UndoButton" Header="Undo" IsEnabled="{Binding UndoEnabled}"/>
-                <MenuItem x:Name="RedoButton" Header="Redo" IsEnabled="{Binding RedoEnabled}"/>
+                <MenuItem x:Name="UndoButton" Header="Undo" HotKey="Ctrl+Z" InputGesture="Ctrl+Z"  IsEnabled="{Binding UndoEnabled}" Click="UndoButton_OnClick"/>
+                <MenuItem x:Name="RedoButton" Header="Redo" HotKey="Ctrl+Y" InputGesture="Ctrl+Y" IsEnabled="{Binding RedoEnabled}" Click="RedoButton_OnClick"/>
                 <Separator />
-                <MenuItem x:Name="ResizeButton" Header="Resize Canvas" Command="{Binding EditExistingGridCommand}"/>
+                <MenuItem x:Name="ResizeButton" Header="Resize Canvas" Command="{Binding EditExistingGridCommand}"/> <!-- This is a command because it involves the creation of a sub-window -->
                 <Separator />
                 <MenuItem Header="Select All"/>
             </MenuItem>
@@ -88,7 +88,7 @@
                     <TextBlock Grid.Column="1" Text="Line Color" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
             </Button>
-            <ToggleButton x:Name="Eyedropper_Tool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1">
+            <ToggleButton x:Name="EyedropperTool" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1">
                 <Image Source="avares://VGraphPort/Assets/Eyedropper.png"></Image>
             </ToggleButton>
         </DockPanel>

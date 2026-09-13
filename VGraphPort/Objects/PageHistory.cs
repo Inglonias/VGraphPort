@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace VGraphPort.Objects
@@ -17,6 +18,7 @@ namespace VGraphPort.Objects
         private const int HistoryCapacity = 20;
         public History<PageState> UndoHistory = new History<PageState>(HistoryCapacity);
         public History<PageState> RedoHistory = new History<PageState>(HistoryCapacity);
+        public event EventHandler? PageHistoryChanged;
 
         public static PageHistory Instance { get; } = new PageHistory();
 
@@ -48,6 +50,7 @@ namespace VGraphPort.Objects
             {
                 RedoHistory.Clear();
             }
+            PageHistoryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void CreateUndoPoint (PageState ps)
@@ -68,11 +71,13 @@ namespace VGraphPort.Objects
                 redoPoint.Labels = DeepCopyList(labelList);
             }
             RedoHistory.Push(redoPoint);
+            PageHistoryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void CreateRedoPoint(PageState ps)
         {
             RedoHistory.Push(ps);
+            PageHistoryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public PageState PopUndoAction()
@@ -88,11 +93,13 @@ namespace VGraphPort.Objects
         public void ClearUndo()
         {
             UndoHistory.Clear();
+            PageHistoryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void ClearRedo()
         {
             RedoHistory.Clear();
+            PageHistoryChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void MergeLineLabelUndo()

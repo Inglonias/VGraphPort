@@ -205,5 +205,23 @@ namespace VGraphPort.Views
                 "application/x-vgp"
             }
         };
+
+        private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.UndoLastAction();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
+
+        private void RedoButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MenuBarModel vm)
+            {
+                vm.RedoLastAction();
+            }
+            ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
+        }
     }
 }

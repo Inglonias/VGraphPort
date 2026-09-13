@@ -14,7 +14,6 @@ public partial class MenuBarModel : ViewModelBase
 {
     [ObservableProperty] public partial bool UndoEnabled { get; set; } = false;
     [ObservableProperty] public partial bool RedoEnabled { get; set; } = false;
-    [ObservableProperty] public partial bool CenterLinesEnabled { get; set; }
     public Func<Task<bool>>? RequestUnsavedChangesConfirmation { get; set; }
 
     public event EventHandler<bool>? ShowNewGridWindow;
@@ -27,6 +26,10 @@ public partial class MenuBarModel : ViewModelBase
     {
         CreateNewGridCommand = new RelayCommand(CreateNewGrid);
         EditExistingGridCommand = new RelayCommand(EditExistingGrid);
+        PageHistory.Instance.PageHistoryChanged += (sender, args) =>
+        {
+            CheckEditButtonValidity();
+        };
     }
 
     private void CreateNewGrid()
@@ -113,5 +116,44 @@ public partial class MenuBarModel : ViewModelBase
     public void ExportVgp(string filePath)
     {
         PageData.Instance.FileExport(filePath);
+    }
+
+    public void UndoLastAction()
+    {
+        LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
+        TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
+        PageHistory.Instance.CreateRedoPoint(lineLayer.LineList, textLayer.LabelList);
+        PageHistory.PageState ps = PageHistory.Instance.PopUndoAction();
+
+        if (ps.Lines != null)
+        {
+            lineLayer.LineList = ps.Lines;
+            lineLayer.ForceRedraw();
+        }
+        if (ps.Labels != null)
+        {
+            textLayer.LabelList = ps.Labels;
+            textLayer.ForceRedraw();
+        }
+    }
+
+    public void RedoLastAction()
+    {
+        LineLayer lineLayer = (LineLayer)PageData.Instance.GetDataLayer(PageData.LINE_LAYER);
+        TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
+        PageHistory.Instance.CreateUndoPoint(lineLayer.LineList, textLayer.LabelList, false);
+        PageHistory.PageState ps = PageHistory.Instance.PopRedoAction();
+
+        if (ps.Lines != null)
+        {
+            lineLayer.LineList = ps.Lines;
+            lineLayer.ForceRedraw();
+        }
+        if (ps.Labels != null)
+        {
+            textLayer.LabelList = ps.Labels;
+            textLayer.ForceRedraw();
+        }
+        CheckEditButtonValidity();
     }
 }
