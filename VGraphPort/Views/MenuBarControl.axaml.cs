@@ -94,7 +94,7 @@ namespace VGraphPort.Views
             {
                 if (DataContext is MenuBarModel vm)
                 {
-                    vm.OpenVgpFile(file[0].Path.ToString().Substring(7));
+                    vm.OpenVgpFile(file[0].Path.ToString()[8..]);
                 }
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
@@ -127,7 +127,7 @@ namespace VGraphPort.Views
             {
                 if (DataContext is MenuBarModel vm)
                 {
-                    vm.SaveNewVgp(file.Path.ToString()[7..]);
+                    vm.SaveNewVgp(file.Path.ToString()[8..]);
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace VGraphPort.Views
             {
                 if (DataContext is MenuBarModel vm)
                 {
-                    vm.ImportVgp(file[0].Path.ToString()[7..]);
+                    vm.ImportVgp(file[0].Path.ToString()[8..]);
                 }
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
@@ -165,7 +165,7 @@ namespace VGraphPort.Views
             {
                 if (DataContext is MenuBarModel vm)
                 {
-                    vm.ExportVgp(file.Path.ToString()[7..]);
+                    vm.ExportVgp(file.Path.ToString()[8..]);
                 }
             }
         }

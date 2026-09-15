@@ -92,7 +92,7 @@
         </Grid>
         <Grid Grid.Row="5">
             <Border BorderThickness="1" Margin="4,0">
-                <TextBlock x:Name="ImageInfoTextBlock" Margin="2" Text="{Binding ImageInfoTextBlock}" FontFamily="Courier New" Background="White"/>
+                <TextBlock x:Name="ImageInfoTextBlock" Margin="2" Text="{Binding ImageInfoTextBlock}" FontFamily="Courier New"/>
             </Border>
         </Grid>
         <Grid Name="ButtonContainer" Grid.Row="6">

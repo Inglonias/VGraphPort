@@ -25,6 +25,12 @@ public partial class NewGridWindowModel : ViewModelBase
     
     public ICommand PressOkCommand { get; }
 
+    partial void OnGridSquaresWideChanged(string value) => CalculateImageInfo();
+    partial void OnGridSquaresTallChanged(string value) => CalculateImageInfo();
+    partial void OnGridSquareSizeChanged(string value) => CalculateImageInfo();
+    partial void OnPageMarginXChanged(string value) => CalculateImageInfo();
+    partial void OnPageMarginYChanged(string value) => CalculateImageInfo();
+    partial void OnImagePathChanged(string value) => CalculateImageInfo();
 
     public NewGridWindowModel()
     {
@@ -107,6 +113,10 @@ public partial class NewGridWindowModel : ViewModelBase
         {
             displayText = displayText.Replace("[CANVSIZE]", "   N/A x N/A   ");
             displayText = displayText.Replace("[GRIDSIZE]", "   N/A x N/A   ");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Uh oh");
         }
 
         if (File.Exists(ImagePath))

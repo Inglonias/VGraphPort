@@ -17,7 +17,7 @@ public partial class NewGridWindow : Window
         InitializeComponent();
         InvalidateVisual();
     }
-
+    
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
@@ -60,7 +60,7 @@ public partial class NewGridWindow : Window
         {
             if (DataContext is NewGridWindowModel vm)
             {
-                vm.ImagePath = file[0].Path.ToString().Substring(7); //Remove the preceding "file//"
+                vm.ImagePath = file[0].Path.ToString().Substring(8); //Remove the preceding "file//"
             }
         }
     }
