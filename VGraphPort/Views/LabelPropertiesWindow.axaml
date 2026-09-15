@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Text:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox Name="TextBoxLabelText" Grid.Column="1" Margin="10" VerticalContentAlignment="Center" Text="Label Text"/>
+            <TextBox Name="TextBoxLabelText" Grid.Column="1" Margin="10" VerticalContentAlignment="Center" Text="{Binding LabelTextInUi, Mode=TwoWay}"/>
 
         </Grid>
         <Grid Grid.Row="1">
@@ -34,30 +34,22 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Font:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Margin="10" Name="ComboBoxFonts" FontSize="12" ItemsSource="{Binding InstalledFonts}">
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Center" Name="ComboBoxFonts" FontSize="12" ItemsSource="{Binding InstalledFonts}" SelectedItem="{Binding FontInUi, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="FontFamily">
-                        <TextBlock 
-                            Text="{Binding Name}"
-                            FontFamily="{Binding .}"
-                            TextTrimming="CharacterEllipsis" 
-                        />
+                        <TextBlock Text="{Binding Name}" FontFamily="{Binding .}" TextTrimming="CharacterEllipsis"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </Grid>
         <Grid Grid.Row="2">
             <Label Grid.Column="0" Content="Alignment:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ComboBox Name="ComboBoxAlignment" Grid.Column="1" HorizontalAlignment="Left" Margin="18,0,0,0" VerticalAlignment="Center" Width="105" SelectedIndex="4">
-                <ComboBoxItem Content="Top Left"/>
-                <ComboBoxItem Content="Top Center"/>
-                <ComboBoxItem Content="Top Right"/>
-                <ComboBoxItem Content="Center Left"/>
-                <ComboBoxItem Content="Center Center"/>
-                <ComboBoxItem Content="Center Right"/>
-                <ComboBoxItem Content="Bottom Left"/>
-                <ComboBoxItem Content="Bottom Center"/>
-                <ComboBoxItem Content="Bottom Right"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding AlignmentOptions}" SelectedItem="{Binding SelectedAlignmentInUi}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:LabelPropertiesViewModel+AlignmentOption">
+                        <TextBlock Text="{Binding DisplayText}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Grid.Column="2" Content="Size:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox Name="TextBoxFontSize" Grid.Column="3" HorizontalAlignment="Left" Text="12" Margin="10" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="NoWrap"  VerticalAlignment="Center" Width="32"/>
@@ -70,7 +62,7 @@
         </Grid>
         <Grid Grid.Row="3">
             <Label Grid.Row="0" Grid.Column="0" Content="Color:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ColorPicker Grid.Column="1" Margin="10 0" Color="{Binding ChosenColor, Mode=TwoWay}"/>
+            <ColorPicker Grid.Column="1" Margin="10 0" Color="{Binding ChosenColorInUi, Mode=TwoWay}"/>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
