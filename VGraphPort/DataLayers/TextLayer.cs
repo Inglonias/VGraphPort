@@ -16,11 +16,10 @@ namespace VGraphPort.DataLayers
         private bool _redrawRequired = false;
         public List<TextLabel> LabelList { get; set; } = new List<TextLabel>();
         public bool ToolActive { get; private set; } = false;
-        private string _currentFontFamily = "Arial";
-        private int _currentFontSize = 12;
         bool IDataLayer.DrawInExport => false;
         private SKImage? _lastImage;
         SKImage? IDataLayer.LastImage => _lastImage;
+        public event EventHandler<TextLabel>? EditTextLabelEvent;
 
         public void ForceRedraw()
         {
@@ -92,12 +91,10 @@ namespace VGraphPort.DataLayers
             {
                 return;
             }
-            SKColor color = PageData.Instance.CurrentLineColor;
-            //LabelPropertiesWindow lpw = new LabelPropertiesWindow();
-            //lpw.TextBoxFontSize.Text = _currentFontSize.ToString();
-            //lpw.ComboBoxFonts.SelectedItem = new FontFamily(_currentFontFamily);
-            //lpw.TargetGridPoint = targetGrid;
-            //lpw.Show();
+            PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
+            TextLabel newLabel = new TextLabel(targetGrid, "New Label", SKColors.Black.ToString(), "Arial", 12, TextLabel.ALIGN_CENTER_CENTER, previewLayer.OddMode);
+            LabelList.Add(newLabel);
+            EditTextLabelEvent?.Invoke(this, newLabel);
         }
 
         public bool HandleSelectionClick(Point point, bool maintainSelection)
@@ -111,10 +108,8 @@ namespace VGraphPort.DataLayers
                     if (l.IsSelected)
                     {
                         //If we're clicking an already selected label, we want to edit it.
-                        //LabelPropertiesWindow lpw = new LabelPropertiesWindow();
-                        //lpw.AssociateWithLabel(l);
-                        //lpw.Show();
-                        //return true;
+                        EditTextLabelEvent?.Invoke(this, l);
+
                     }
                 }
 
