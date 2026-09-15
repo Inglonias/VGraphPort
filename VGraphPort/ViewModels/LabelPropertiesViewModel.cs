@@ -9,32 +9,47 @@ namespace VGraphPort.ViewModels;
 
 public partial class LabelPropertiesViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    public partial IFontCollection InstalledFonts { get; set; }
+    [ObservableProperty] public partial IFontCollection InstalledFonts { get; set; }
     [ObservableProperty] public partial TextLabel TargetLabel { get; set; }
+    [ObservableProperty] public partial string LabelTextInUi { get; set; }
+    [ObservableProperty] public partial int FontSizeInUi { get; set; }
+    [ObservableProperty] public partial FontFamily FontInUi { get; set; }
+    [ObservableProperty] public partial int AlignmentIntInUi { get; set; }
 
-    public Color ChosenColor
+    public Color ChosenColorInUi
     {
-        get { return _chosenColor; }
-        set { _chosenColor = SetChosenColor(value); }
-        
+        get { return _chosenColorInUi; }
+        set { _chosenColorInUi = SetChosenColor(value); }
+
     }
-    private Color _chosenColor;
-    
+    private Color _chosenColorInUi;
+
     public LabelPropertiesViewModel(TextLabel targetLabel)
     {
         TargetLabel = targetLabel;
+        LabelTextInUi = TargetLabel.LabelText;
+        FontSizeInUi = TargetLabel.FontSize;
         InstalledFonts = FontManager.Current.SystemFonts;
-        _chosenColor = Color.FromArgb(PageData.Instance.CurrentLabelColor.Alpha,
-            PageData.Instance.CurrentLabelColor.Red, 
+        FontInUi = InstalledFonts[0];
+        foreach (FontFamily f in InstalledFonts)
+        {
+            if (f.Name.Equals(TargetLabel.FontFamily))
+            {
+                FontInUi = f;
+                break;
+            }
+        }
+        AlignmentIntInUi = TargetLabel.Alignment;
+        _chosenColorInUi = Color.FromArgb(PageData.Instance.CurrentLabelColor.Alpha,
+            PageData.Instance.CurrentLabelColor.Red,
             PageData.Instance.CurrentLabelColor.Green,
             PageData.Instance.CurrentLabelColor.Blue);
     }
-    
+
     public Color SetChosenColor(Color newColor)
     {
-        _chosenColor = newColor;
+        _chosenColorInUi = newColor;
         PageData.Instance.CurrentLabelColor = newColor.ToSKColor();
-        return _chosenColor;
+        return _chosenColorInUi;
     }
 }
