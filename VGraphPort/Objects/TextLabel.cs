@@ -68,29 +68,33 @@ namespace VGraphPort.Objects
         //The origin point for text can vary depending on a lot of things - notably its alignment and size.
         //This method guarantees a reliable origin point - the top left of the label.
         //If we want to align things, we'll need to do it ourselves.
-        public SKBitmap RenderTextLabel()
+        public SKImage RenderTextLabel()
         {
-            //Double the height to account for letters like p and q.
-            SKBitmap image = new SKBitmap(new SKImageInfo(GetLabelRect().Width, GetLabelRect().Height * 3 / 2));
-            SKCanvas drawingSurface = new SKCanvas(image);
-            //drawingSurface.Clear(SKColors.Yellow);
-            SKColor labelColor = TextLabel.DEFAULT_COLOR;
-            SKColor.TryParse(LabelColor, out labelColor);
-            SKFont textFont = new SKFont { Typeface = SKTypeface.FromFamilyName(FontFamily), Size = FontSize };
-            SKPaint textBrush = new SKPaint { Color = labelColor };
-            float[] intervals = { 5.0f, 5.0f };
-            SKPathEffect dashPathEffect = SKPathEffect.CreateDash(intervals, 5.0f);
-            SKPaint selectedBrush = new SKPaint { Style = SKPaintStyle.Stroke,PathEffect = dashPathEffect, StrokeWidth = 5.0f, Color = ConfigOptions.Instance.LineHighlightColor, IsAntialias = true };
-            drawingSurface.DrawText(LabelText, 0, GetLabelRect().Height, SKTextAlign.Left, textFont, textBrush);
-            if (IsSelected)
+            //1.5x the height to account for letters like p and q.
+            int targetWidth = GetLabelRect().Width;
+            int targetHeight = (GetLabelRect().Height * 3) / 2;
+            using (SKSurface drawingSurface = SKSurface.Create(new SKImageInfo(targetWidth, targetHeight)))
             {
-                SKRectI selectedRect = new SKRectI(0, 0, image.Width, image.Height);
-                drawingSurface.DrawRect(selectedRect, selectedBrush);
+                var drawingCanvas = drawingSurface.Canvas;
+
+                SKColor labelColor = TextLabel.DEFAULT_COLOR;
+                SKColor.TryParse(LabelColor, out labelColor);
+                SKFont textFont = new SKFont { Typeface = SKTypeface.FromFamilyName(FontFamily), Size = FontSize };
+                SKPaint textBrush = new SKPaint { Color = labelColor };
+                float[] intervals = { 5.0f, 5.0f };
+                SKPathEffect dashPathEffect = SKPathEffect.CreateDash(intervals, 5.0f);
+                SKPaint selectedBrush = new SKPaint { Style = SKPaintStyle.Stroke, PathEffect = dashPathEffect, StrokeWidth = 5.0f, Color = ConfigOptions.Instance.LineHighlightColor, IsAntialias = true };
+                drawingCanvas.DrawText(LabelText, 0, GetLabelRect().Height, SKTextAlign.Left, textFont, textBrush);
+                if (IsSelected)
+                {
+                    SKRectI selectedRect = new SKRectI(0, 0, targetWidth, targetHeight);
+                    drawingCanvas.DrawRect(selectedRect, selectedBrush);
+                }
+                textFont.Dispose();
+                textBrush.Dispose();
+                selectedBrush.Dispose();
+                return drawingSurface.Snapshot();
             }
-            textFont.Dispose();
-            textBrush.Dispose();
-            selectedBrush.Dispose();
-            return image;
         }
 
         /// <summary>
@@ -123,11 +127,12 @@ namespace VGraphPort.Objects
         //If you want the raw size of the label, use this rectangle's width and height.
         public SKRectI GetLabelRect()
         {
-            SKColor labelColor = TextLabel.DEFAULT_COLOR;
+            SKColor labelColor = DEFAULT_COLOR;
             SKColor.TryParse(LabelColor, out labelColor);
             SKFont textFont = new SKFont { Typeface = SKTypeface.FromFamilyName(FontFamily), Size = FontSize };
-            SKPaint textBrush = new SKPaint { Color = labelColor }; SKRect textBounds = new SKRect();
-            textFont.MeasureText(LabelText, textBrush);
+            SKPaint textBrush = new SKPaint { Color = labelColor };
+            SKRect textBounds = new SKRect();
+            textFont.MeasureText(LabelText, out textBounds, textBrush);
 
             textBrush.Dispose();
 
