@@ -114,10 +114,6 @@ public partial class NewGridWindowModel : ViewModelBase
             displayText = displayText.Replace("[CANVSIZE]", "   N/A x N/A   ");
             displayText = displayText.Replace("[GRIDSIZE]", "   N/A x N/A   ");
         }
-        catch (Exception e)
-        {
-            Console.WriteLine("Uh oh");
-        }
 
         if (File.Exists(ImagePath))
         {

@@ -249,8 +249,7 @@ namespace VGraphPort.Views
                 ParentWindow.PrimaryDrawingPanel.InvalidateVisual();
                 ParentWindow.PrimaryDrawingPanel.InvalidateMeasure();
             };
-            ParentWindow.IsHitTestVisible = false;
-            ParentWindow.IsEnabled = false;
+
             ngw.Show();
         }
         

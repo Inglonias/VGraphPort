@@ -21,6 +21,8 @@ public partial class NewGridWindow : Window
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
+        ParentWindow.IsHitTestVisible = false;
+        ParentWindow.IsEnabled = false;
         ParentWindow.Closed += (_, _) =>
         {
             this.Close();
@@ -45,6 +47,13 @@ public partial class NewGridWindow : Window
         
         NewGridWindowComplete?.Invoke(this, EventArgs.Empty);
         Close();
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        ParentWindow.IsHitTestVisible = true;
+        ParentWindow.IsEnabled = true;
     }
 
     private async void BackgroundImageBrowse_OnClick(object sender, RoutedEventArgs e)

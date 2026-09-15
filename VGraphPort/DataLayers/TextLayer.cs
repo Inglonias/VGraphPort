@@ -94,6 +94,7 @@ namespace VGraphPort.DataLayers
             PreviewLayer previewLayer = (PreviewLayer)PageData.Instance.GetDataLayer(PageData.PREVIEW_LAYER);
             TextLabel newLabel = new TextLabel(targetGrid, "New Label", SKColors.Black.ToString(), "Arial", 12, TextLabel.ALIGN_CENTER_CENTER, previewLayer.OddMode);
             LabelList.Add(newLabel);
+            ForceRedraw();
             EditTextLabelEvent?.Invoke(this, newLabel);
         }
 
@@ -271,7 +272,7 @@ namespace VGraphPort.DataLayers
                     SKPointI canvasPoint = label.GetCanvasPoint();
                     canvasPoint.X -= topLeft.X;
                     canvasPoint.Y -= topLeft.Y;
-                    drawingCanvas.DrawBitmap(label.RenderTextLabel(), canvasPoint);
+                    drawingCanvas.DrawImage(label.RenderTextLabel(), canvasPoint);
                 }
                 if (_lastImage != null)
                 {

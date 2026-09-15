@@ -3,6 +3,7 @@ using Avalonia.Media.Fonts;
 using Avalonia.Skia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using VGraphPort.Config;
+using VGraphPort.Objects;
 
 namespace VGraphPort.ViewModels;
 
@@ -10,6 +11,7 @@ public partial class LabelPropertiesViewModel : ViewModelBase
 {
     [ObservableProperty]
     public partial IFontCollection InstalledFonts { get; set; }
+    [ObservableProperty] public partial TextLabel TargetLabel { get; set; }
 
     public Color ChosenColor
     {
@@ -19,8 +21,9 @@ public partial class LabelPropertiesViewModel : ViewModelBase
     }
     private Color _chosenColor;
     
-    public LabelPropertiesViewModel()
+    public LabelPropertiesViewModel(TextLabel targetLabel)
     {
+        TargetLabel = targetLabel;
         InstalledFonts = FontManager.Current.SystemFonts;
         _chosenColor = Color.FromArgb(PageData.Instance.CurrentLabelColor.Alpha,
             PageData.Instance.CurrentLabelColor.Red, 

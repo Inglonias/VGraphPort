@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VGraphPort.Config;
 using VGraphPort.DataLayers;
+using VGraphPort.Objects;
 
 namespace VGraphPort.ViewModels;
 
@@ -16,6 +17,7 @@ public partial class MainViewModel : ViewModelBase
     public ICommand MoveThingsRightCommand { get; }
     public ICommand DeleteThingsCommand { get; }
     public MainCanvasModel CanvasModel { get; }
+    public event EventHandler<TextLabel>? EditTextLabelEvent;
 
     public MainViewModel()
     {
@@ -26,6 +28,13 @@ public partial class MainViewModel : ViewModelBase
         MoveThingsDownCommand = new RelayCommand(MoveThingsDown);
         MoveThingsRightCommand = new RelayCommand(MoveThingsRight);
         DeleteThingsCommand = new RelayCommand(DeleteThings);
+
+        TextLayer textLayer = (TextLayer)PageData.Instance.GetDataLayer(PageData.TEXT_LAYER);
+        textLayer.EditTextLabelEvent += (_, targetLabel) => 
+            {
+                CanvasModel.IncrementCanvasVersion();
+                EditTextLabelEvent?.Invoke(this, targetLabel);
+            };
     }
 
     private void MoveThings(int x, int y)

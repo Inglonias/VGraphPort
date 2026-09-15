@@ -25,8 +25,8 @@ namespace VGraphPort.DataLayers
             //Assign page data
             PageData.Instance.GetDataLayers()[PageData.GRID_LAYER] = lGrid;
             PageData.Instance.GetDataLayers()[PageData.LINE_LAYER] = lLines;
-            PageData.Instance.GetDataLayers()[PageData.PREVIEW_LAYER] = lPreview;
             PageData.Instance.GetDataLayers()[PageData.TEXT_LAYER] = lText;
+            PageData.Instance.GetDataLayers()[PageData.PREVIEW_LAYER] = lPreview;
             PageData.Instance.GetDataLayers()[PageData.CURSOR_LAYER] = lCursor;
             
             //Add layers to the rendering stack.
